@@ -6,26 +6,16 @@
 /*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 10:34:04 by adeimlin          #+#    #+#             */
-/*   Updated: 2025/05/14 12:16:54 by adeimlin         ###   ########.fr       */
+/*   Updated: 2025/05/15 12:01:40 by adeimlin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdint.h>
 #include <stddef.h>
+#include <stdlib.h>
+#include "push_swap.h"
 
-int64_t	ft_atoi(const char *num_str);
-void	ft_putnbr(int64_t n, int fd);
-
-static void	ft_stackswap(int32_t *a, int32_t *b)
-{
-	int32_t	temp;
-
-	temp = *a;
-	*a = *b;
-	*b = temp;
-}
-
-static int	ft_error(int32_t a, int32_t b, uint_fast8_t code, size_t index)
+static int	ft_error(int32_t *a, int32_t *b, uint_fast8_t code, size_t index)
 {
 	static const size_t	msg_length[4] = {31, 21, 29, 39};
 	static const char	*error_msg[4] = {
@@ -71,22 +61,48 @@ static int	ft_parse_input(char **argv, int argc, int32_t *sta, int32_t *stb)
 	return (0);
 }
 
-// Maybe add a 1024 buffer
-int	main(int argc, char **argv)
+// // Can receive array a and b, and return stack a, b and s
+// static int	ft_sort(t_stack *a, t_stack *b)
+// {
+	
+// }
+
+// // Maybe add a 1024 buffer
+// int	main(int argc, char **argv)
+// {
+// 	int32_t	*array_a;
+// 	int32_t	*array_b;
+// 	t_stack	stack_a;
+// 	t_stack	stack_b;
+
+// 	if (argc <= 1)
+// 		return (0);
+// 	array_a = (int32_t *) malloc(sizeof(int32_t) * (argc - 1));
+// 	array_b = (int32_t *) malloc(sizeof(int32_t) * (argc - 1));
+// 	if (array_a == NULL || array_b == NULL)
+// 		return (ft_error(array_a, array_b, 0, 0));
+// 	else if (ft_parse_input(argv, argc, array_a, array_b))
+// 		return (1);
+// 	stack_a.array = array_a;
+// 	stack_a.length = argc - 1;
+// 	stack_b.array = array_b;
+// 	stack_b.length = argc - 1;
+
+// 	free(stack_a.array);
+// 	free(stack_b.array);
+// }
+
+int main()
 {
-	int32_t	*stack_a;
-	int32_t	*stack_b;
-	int64_t	number;
+	int32_t array[5] = {1,2,3,4,5};
+	int32_t array0[5] = {0,0,0,0,0};
+	t_stack	stack_a = {array, 5};
+	t_stack	stack_b = {array0, 1};
 
-	if (argc <= 1)
-		return (0);
-	stack_a = (int32_t *) malloc(sizeof(int32_t) * (argc - 1));
-	stack_b = (int32_t *) malloc(sizeof(int32_t) * (argc - 1));
-	if (stack_a == NULL || stack_b == NULL)
-		return (ft_error(stack_a, stack_b, 0, 0));
-	else if (ft_parse_input(argv, argc, stack_a, stack_b))
-		return (1);
-
-	free(stack_a);
-	free(stack_b);
+	ft_command(CMD_PB, &stack_a, &stack_b);
+	ft_command(CMD_PB, &stack_a, &stack_b);
+	ft_command(CMD_PB, &stack_a, &stack_b);
+	ft_command(CMD_PA, &stack_a, &stack_b);
+	ft_command(CMD_PA, &stack_a, &stack_b);
+	ft_command(CMD_PA, &stack_a, &stack_b);
 }
