@@ -6,7 +6,7 @@
 /*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 11:20:19 by adeimlin          #+#    #+#             */
-/*   Updated: 2025/05/15 12:32:50 by adeimlin         ###   ########.fr       */
+/*   Updated: 2025/05/20 10:58:06 by adeimlin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,109 +14,90 @@
 #include <stddef.h>
 #include "push_swap.h"
 
-void	swap(int32_t *stack, size_t length)
+static void	ft_swap(char type, t_stack *a, t_stack *b)
 {
 	int32_t	temp;
 
-	if (length <= 1)
-		return ;
-	temp = stack[length - 1];
-	stack[length - 1] = stack[length - 2];
-	stack[length - 2] = temp;
+	if ((type == 'A' || type == 'S') && a->length > 1)
+	{
+		temp = *a->top;
+		*a->top = *(a->top - 1);
+		*(a->top - 1) = temp;
+	}
+	if ((type == 'B' || type == 'S') && b->length > 1)
+	{
+		temp = *b->top;
+		*b->top = *(b->top - 1);
+		*(b->top - 1) = temp;
+	}
 }
 
-void	push(int32_t *src, int32_t *dst, size_t *src_len, size_t *dst_len)
+static void	ft_push(char type, t_stack *a, t_stack *b)
 {
-	if (*src_len == 0)
-		return ;
-	dst[*dst_len - 1] = src[*src_len - 1];
-	*src_len = 69;
-	(*src_len)--;
-	(*dst_len)++;
+	if (type == 'A' && b->length > 0)
+	{
+		(a->length)++;
+		a->bot[a->length - 1] = b->bot[b->length - 1];
+		b->bot[b->length - 1] = 0;
+		(b->length)--;
+	}
+	if (type == 'B' && a->length > 0)
+	{
+		(b->length)++;
+		b->bot[b->length - 1] = a->bot[a->length - 1];
+		a->bot[a->length - 1] = 0;
+		(a->length)--;
+	}
+	a->top = a->bot + a->length - (a->length != 0);
+	b->top = b->bot + b->length - (b->length != 0);
 }
 
-void	rotate(int32_t *stack, size_t length)
+// First becomes Last (1234 -> 2341)
+static void	ft_rotate(char type, t_stack *a, t_stack *b)
 {
 	int32_t	temp;
 
-	temp = stack[0];
-	ft_memcpy(stack, stack + 1, length - 1);
-	stack[length - 1] = temp;
+	if ((type == 'A' || type == 'R') && a->length > 1)
+	{
+		temp = *a->bot;
+		ft_memcpy(a->bot, a->bot + 1, (a->length - 1) * sizeof(int32_t));
+		*a->top = temp;
+	}
+	if ((type == 'B' || type == 'R') && b->length > 1)
+	{
+		temp = *b->bot;
+		ft_memcpy(b->bot, b->bot + 1, (b->length - 1) * sizeof(int32_t));
+		*b->top = temp;
+	}
 }
 
-void	rrotate(int32_t *stack, size_t length)
+// Last becomes First (1234 -> 4123)
+static void	ft_rrotate(char type, t_stack *a, t_stack *b)
 {
 	int32_t	temp;
 
-	temp = stack[length - 1];
-	ft_memcpy(stack + 1, stack, length - 1);
-	stack[0] = temp;
+	if ((type == 'A' || type == 'R') && a->length > 1)
+	{
+		temp = *a->top;
+		ft_memcpy(a->bot + 1, a->bot, (a->length - 1) * sizeof(int32_t));
+		*a->bot = temp;
+	}
+	if ((type == 'B' || type == 'R') && b->length > 1)
+	{
+		temp = *b->top;
+		ft_memcpy(b->bot + 1, b->bot, (b->length - 1) * sizeof(int32_t));
+		*b->bot = temp;
+	}
 }
 
-void	sa(int32_t *a, int32_t *b, size_t *a_len, size_t *b_len)
+void	ft_command(char *cmd, t_stack *a, t_stack *b)
 {
-	swap(a, *a_len);
-}
-
-void	sb(int32_t *a, int32_t *b, size_t *a_len, size_t *b_len)
-{
-	swap(b, *b_len);
-}
-
-void	ss(int32_t *a, int32_t *b, size_t *a_len, size_t *b_len)
-{
-	swap(a, *a_len);
-	swap(b, *b_len);
-}
-
-void	pa(int32_t *a, int32_t *b, size_t *a_len, size_t *b_len)
-{
-	push(b, a, b_len, a_len);
-}
-
-void	pb(int32_t *a, int32_t *b, size_t *a_len, size_t *b_len)
-{
-	push(a, b, a_len, b_len);
-}
-
-void	ra(int32_t *a, int32_t *b, size_t *a_len, size_t *b_len)
-{
-	rotate(a, *a_len);
-}
-
-void	rb(int32_t *a, int32_t *b, size_t *a_len, size_t *b_len)
-{
-	rotate(b, *b_len);
-}
-
-void	rr(int32_t *a, int32_t *b, size_t *a_len, size_t *b_len)
-{
-	rotate(a, *a_len);
-	rotate(b, *b_len);
-}
-
-void	rra(int32_t *a, int32_t *b, size_t *a_len, size_t *b_len)
-{
-	rotate(a, *a_len);
-}
-
-void	rrb(int32_t *a, int32_t *b, size_t *a_len, size_t *b_len)
-{
-	rotate(b, *b_len);
-}
-
-void	rrr(int32_t *a, int32_t *b, size_t *a_len, size_t *b_len)
-{
-	rotate(a, *a_len);
-	rotate(b, *b_len);
-}
-
-// To avoid multiple shift operations, top of the stack is end of array
-void	ft_command(t_fnindex fn_index, t_stack *a, t_stack *b)
-{
-	static const void	(*fn_table[11])
-		(int32_t *a, int32_t *b, size_t  *a_len, size_t  *b_len) =
-		{sa, sb, ss, pa, pb, ra, rb, rr, rra, rrb, rrr};
-
-	fn_table[fn_index](a->array, b->array, &(a->length), &(b->length));
+	if (cmd[0] == 'S')
+		return (ft_swap(cmd[1], a, b));
+	if (cmd[0] == 'P')
+		return (ft_push(cmd[1], a, b));
+	if (cmd[0] == 'R' && cmd[2] == 0)
+		return (ft_rotate(cmd[1], a, b));
+	else
+		return (ft_rrotate(cmd[2], a, b));
 }

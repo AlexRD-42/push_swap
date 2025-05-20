@@ -6,7 +6,7 @@
 /*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 10:34:46 by adeimlin          #+#    #+#             */
-/*   Updated: 2025/05/15 11:53:02 by adeimlin         ###   ########.fr       */
+/*   Updated: 2025/05/20 12:06:44 by adeimlin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ static void	*ft_memrcpy(void *dst_void, const void *src_void, size_t length)
 		length -= sizeof(int *);
 		*((uintptr_t *)dst) = *((uintptr_t *)src);
 	}
-	while (length > 0)
+	while (length-- > 0)
 		*--dst = *--src;
 	return (dst_void);
 }
@@ -105,4 +105,27 @@ void	ft_putnbr(int64_t n, int fd)
 	if (sign == -1)
 		*(--ptr) = '-';
 	write(fd, ptr, array + 20 - ptr);
+}
+
+int64_t	ft_delta_sum(int32_t *array, size_t size)
+{
+	int64_t lsum;
+	int64_t rsum;
+	size_t	i;
+
+	lsum = 0;
+	rsum = 0;
+	i = 0;
+	while (i < size / 2)
+	{
+		lsum += array[i];
+		i++;
+	}
+	i = size;
+	while (i > size / 2)
+	{
+		i--;
+		rsum += array[i];
+	}
+	return (rsum - lsum);
 }

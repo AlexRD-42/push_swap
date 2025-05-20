@@ -7,9 +7,10 @@
             "args": [
                 "-fdiagnostics-color=always",
                 "-g",
+                "${fileDirname}/*.c",
+				// "${file}",
 				"-Wall",
 				"-Wextra",
-                "*.c",
                 "-o",
                 "${fileDirname}/${fileBasenameNoExtension}"
             ],
