@@ -6,7 +6,7 @@
 /*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 11:20:19 by adeimlin          #+#    #+#             */
-/*   Updated: 2025/05/20 10:58:06 by adeimlin         ###   ########.fr       */
+/*   Updated: 2025/05/23 13:00:11 by adeimlin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,14 +90,18 @@ static void	ft_rrotate(char type, t_stack *a, t_stack *b)
 	}
 }
 
+// Should have a write buffer
 void	ft_command(char *cmd, t_stack *a, t_stack *b)
 {
+	static char		print_buffer[1024];
+	static size_t	index = 0;
+
 	if (cmd[0] == 'S')
 		return (ft_swap(cmd[1], a, b));
 	if (cmd[0] == 'P')
 		return (ft_push(cmd[1], a, b));
 	if (cmd[0] == 'R' && cmd[2] == 0)
 		return (ft_rotate(cmd[1], a, b));
-	else
+	else if (cmd[0] == 'R')
 		return (ft_rrotate(cmd[2], a, b));
 }

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   input_parsing.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 10:34:04 by adeimlin          #+#    #+#             */
-/*   Updated: 2025/05/20 11:03:56 by adeimlin         ###   ########.fr       */
+/*   Updated: 2025/05/23 11:47:22 by adeimlin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,12 +61,6 @@ static int	ft_parse_input(char **argv, int argc, int32_t *sta, int32_t *stb)
 	return (0);
 }
 
-// // Can receive array a and b, and return stack a, b and s
-// static int	ft_sort(t_stack *a, t_stack *b)
-// {
-
-// }
-
 // Maybe add a 1024 buffer
 // int	main(int argc, char **argv)
 // {
@@ -90,21 +84,4 @@ static int	ft_parse_input(char **argv, int argc, int32_t *sta, int32_t *stb)
 
 // 	free(stack_a.array);
 // 	free(stack_b.array);
-// }
-
-// int main()
-// {
-// 	int32_t array[5] = {1, 2, 3, 4, 5};
-// 	int32_t array0[5] = {0, 0, 0, 0, 0};
-// 	t_stack	stack_a = {array, array + 4, 5};
-// 	t_stack	stack_b = {array0, array0, 0};
-
-// 	ft_command("PB", &stack_a, &stack_b);
-// 	ft_command("PB", &stack_a, &stack_b);
-// 	ft_command("RA", &stack_a, &stack_b);
-// 	ft_command("RB", &stack_a, &stack_b);
-// 	ft_command("RR", &stack_a, &stack_b);
-// 	ft_command("RRA", &stack_a, &stack_b);
-// 	ft_command("RRB", &stack_a, &stack_b);
-// 	ft_command("RRR", &stack_a, &stack_b);
 // }

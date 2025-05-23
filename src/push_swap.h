@@ -6,7 +6,7 @@
 /*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 10:47:43 by adeimlin          #+#    #+#             */
-/*   Updated: 2025/05/20 12:52:18 by adeimlin         ###   ########.fr       */
+/*   Updated: 2025/05/23 12:24:11 by adeimlin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,26 +24,22 @@ typedef struct s_stack
 	size_t	length;
 }	t_stack;
 
-typedef struct s_delta
+typedef struct s_median
 {
-	int64_t	a_;
-	int64_t	swap;
-	int64_t	q3;
-	int64_t	q4;
-}	t_delta;
+	int32_t	a;
+	int32_t	mid;
+	int32_t	b;
+}	t_median;
 
-typedef struct s_stats
-{
-	int32_t	min;
-	int32_t	med;
-	int32_t	max;
-}	t_stats;
-
-// See if it's better to define prototypes within files
 int64_t	ft_atoi(const char *num_str);
 void	ft_putnbr(int64_t n, int fd);
 void	*ft_memcpy(void *dst_void, const void *src_void, size_t length);
 void	ft_command(char *cmd, t_stack *a, t_stack *b);
+
 int64_t	ft_delta_sum(int32_t *array, size_t size);
+int64_t	ft_delta_count(int32_t *array, size_t length);
+t_median	ft_get_median(int32_t *array, size_t length);
+size_t	ft_sort_status(t_stack *sta, t_stack *stb);
+void	ft_selection_sort(int32_t *array, size_t length);
 
 #endif
