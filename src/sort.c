@@ -6,7 +6,7 @@
 /*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 16:35:21 by adeimlin          #+#    #+#             */
-/*   Updated: 2025/05/23 13:04:46 by adeimlin         ###   ########.fr       */
+/*   Updated: 2025/05/26 16:29:05 by adeimlin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,11 @@
 // Rotates should be done if the bottom belongs in top
 // R. Rotates should be done if top belongs in bottom
 
+// Another heuristic here could be a weight where the further away it is,
+// the less valuable it is, to make it less likely that it spends multiple operations
 void	ft_push_start(t_stack *sta, t_stack *stb, t_median median)
 {
-	const size_t	length = stb->length - (stb->length & 1);
+	const size_t	length = sta->length / 2 - (sta->length & 1);
 
 	while (stb->length < length)
 	{
@@ -45,22 +47,75 @@ void	ft_push_start(t_stack *sta, t_stack *stb, t_median median)
 	}
 }
 
-// void	ft_sort(t_stack *sta, t_stack *stb, t_stats stats)
+// void	ft_mid_sort(t_stack *sta, t_stack *stb, t_median median)
 // {
 // 	if (*sta->top > *sta->bot && *stb->top < *stb->bot)
 // 		ft_command("RR", &sta, &stb);
 // }
 
-int main()
+ssize_t	ft_delta(const int32_t value1, const int32_t value2, int32_t *array)
 {
-	int32_t array[8] = {5, 2, 7, 3, 4, 1, 8, 6};
-	int32_t array0[8] = {0, 0, 0, 0, 0, 0, 0, 0};
-	int32_t arrays[8];
-	t_median	median;
-	t_stack	stack_a = {array, array + 7, 8};
-	t_stack	stack_b = {array0, array0, 0};
+	ssize_t	i;
+	ssize_t	j;
 
-	ft_memcpy(arrays, array, 8*4);
-	median = ft_get_median(arrays, 8);
-	ft_push_start(&stack_a, &stack_b, median);
+	i = 0;
+	j = 0;
+	while (value1 != array[i])
+		i++;
+	while (value2 != array[j])
+		j++;
+	return (j - i);
 }
+
+uint8_t	ft_swap(t_stack *sta, t_stack *stb, int32_t *sorted)
+{
+	uint8_t	swap;
+	size_t	i;
+
+	swap = 0;
+	if (*sta->top < *(sta->top - 1))
+	{
+		i = 0;
+		while (sorted[i] != *sta->top)
+			i++;
+		if (*sta->bot != sorted[i + 1])
+			swap += 1;
+	}
+	if (*stb->top > *(stb->top - 1))
+	{
+		i = 0;
+		while (sorted[i] != *stb->top)
+			i++;
+		if (*stb->bot != sorted[i - 1])
+			swap += 2;
+	}
+	return (swap);
+}
+
+void	ft_push_end(t_stack *sta, t_stack *stb, int32_t *sorted)
+{
+	uint8_t	swap;
+	uint8_t	status;
+
+	status = ft_sort_status(sta, stb);
+	while (status != 0)
+	{
+		swap = ft_swap(sta, stb, sorted);
+		if (swap == 3)
+			ft_command("SS", sta, stb);
+		else if (swap == 2)
+			ft_command("SB", sta, stb);
+		else if (swap == 1)
+			ft_command("SA", sta, stb);
+		status = ft_sort_status(sta, stb);
+		if (status == 3)
+			ft_command("RR", sta, stb);
+		else if (status == 2)
+			ft_command("RB", sta, stb);
+		else if (status == 1)
+			ft_command("RA", sta, stb);
+	}
+	while (stb->length > 0)
+		ft_command("PA", sta, stb);
+}
+

@@ -6,7 +6,7 @@
 /*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 11:45:52 by adeimlin          #+#    #+#             */
-/*   Updated: 2025/05/23 12:51:48 by adeimlin         ###   ########.fr       */
+/*   Updated: 2025/05/26 16:27:02 by adeimlin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ int64_t	ft_delta_sum(int32_t *array, size_t length)
 	return (sum);
 }
 
+// Need to implement a is_circular_sorted
 int64_t	ft_delta_count(int32_t *array, size_t length)
 {
 	size_t	i;
@@ -60,56 +61,60 @@ t_median	ft_get_median(int32_t *array, size_t length)
 {
 	t_median		median;
 
-	ft_selection_sort(array, length);
-	if (length-- == 0)
-		return (median);
+	ft_insertion_sort(array, length);
+	length -= length != 0;
 	median.a = *(array + length / 4);
 	median.mid = *(array + length / 2);
 	median.b = *(array + length - length / 4);
 	return (median);
 }
 
-size_t	ft_sort_status(t_stack *sta, t_stack *stb)
+uint8_t	ft_sort_status(t_stack *sta, t_stack *stb)
 {
+	uint8_t	status;
 	size_t	i;
 
 	i = 1;
+	status = 0;
 	while (i < sta->length)
 	{
 		if (sta->bot[i - 1] > sta->bot[i])
-			return (sta->length - i - 1);
+		{
+			status += 1;
+			break ;
+		}
 		i++;
 	}
 	i = 1;
 	while (i < stb->length)
 	{
 		if (stb->bot[i - 1] < stb->bot[i])
-			return (stb->length - i - 1);
+		{
+			status += 2;
+			break ;
+		}
 		i++;
 	}
-	return (0);
+	return (status);
 }
 
-void	ft_selection_sort(int32_t *array, size_t length)
+void	ft_insertion_sort(int32_t *array, size_t length)
 {
-	int32_t			temp;
-	int32_t			*min;
-	int32_t			*ptr;
-	const int32_t	*end = array + length;
+	size_t	i;
+	size_t	j;
+	int32_t	key;
 
-	while (array < end - 1)
+	i = 1;
+	while (i < length)
 	{
-		min = array;
-		ptr = array + 1;
-		while (ptr < end)
+		j = i;
+		key = array[i];
+		while (j > 0 && array[j - 1] > key)
 		{
-			if (*ptr < *min)
-				min = ptr;
-			ptr++;
+			array[j] = array[j - 1];
+			j--;
 		}
-		temp = *array;
-		*array = *min;
-		*min = temp;
-		array++;
+		array[j] = key;
+		i++;
 	}
 }
