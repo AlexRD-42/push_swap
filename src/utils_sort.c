@@ -6,13 +6,28 @@
 /*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 11:45:52 by adeimlin          #+#    #+#             */
-/*   Updated: 2025/05/26 16:27:02 by adeimlin         ###   ########.fr       */
+/*   Updated: 2025/05/29 18:50:19 by adeimlin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdint.h>
 #include <unistd.h>
 #include "push_swap.h"
+
+t_median	ft_get_median(int32_t *array, size_t start, size_t end)
+{
+	t_median	median;
+	size_t		length;
+
+	length = end - start;
+	median.count = length / 2 + (length % 2 != 0);
+	length -= (end != start);
+	array += start;
+	median.lower = *(array + length / 4);
+	median.middle = *(array + length / 2 + (length % 2 != 0));
+	median.upper = *(array + length - length / 4);
+	return (median);
+}
 
 int64_t	ft_delta_sum(int32_t *array, size_t length)
 {
@@ -55,18 +70,6 @@ int64_t	ft_delta_count(int32_t *array, size_t length)
 		i++;
 	}
 	return (count);
-}
-
-t_median	ft_get_median(int32_t *array, size_t length)
-{
-	t_median		median;
-
-	ft_insertion_sort(array, length);
-	length -= length != 0;
-	median.a = *(array + length / 4);
-	median.mid = *(array + length / 2);
-	median.b = *(array + length - length / 4);
-	return (median);
 }
 
 uint8_t	ft_sort_status(t_stack *sta, t_stack *stb)

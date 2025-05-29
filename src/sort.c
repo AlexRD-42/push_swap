@@ -6,116 +6,124 @@
 /*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 16:35:21 by adeimlin          #+#    #+#             */
-/*   Updated: 2025/05/26 16:29:05 by adeimlin         ###   ########.fr       */
+/*   Updated: 2025/05/29 19:30:50 by adeimlin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdint.h>
 #include <stddef.h>
+#include <stdlib.h>
+#include <time.h>
 #include "push_swap.h"
 
-// Could add double instructions as soon as B.length > 2
-// Would require only a check to see if length is bigger than the other
-// Sort both arrays while they are 
-
-// Pushes should always be done when valid
-// Swaps should be done if top belongs in h2
-	// Or if both numbers belong in h1 AND top - 1 > top
-
-// Rotates should be done if the bottom belongs in top
-// R. Rotates should be done if top belongs in bottom
-
-// Another heuristic here could be a weight where the further away it is,
-// the less valuable it is, to make it less likely that it spends multiple operations
-void	ft_push_start(t_stack *sta, t_stack *stb, t_median median)
+void	ft_push_single(t_stack *sta, t_stack *stb, int32_t target)
 {
-	const size_t	length = sta->length / 2 - (sta->length & 1);
-
-	while (stb->length < length)
-	{
-		if (*sta->top > median.mid)
-			ft_command("PB", sta, stb);
-		else
-		{
-			if (ft_delta_count(sta->bot, sta->length) < 0)
-				while (*sta->top < median.mid)
-					ft_command("RA", sta, stb);
-			else
-				while (*sta->top < median.mid)
-					ft_command("RRA", sta, stb);
-		}
-	}
-}
-
-// void	ft_mid_sort(t_stack *sta, t_stack *stb, t_median median)
-// {
-// 	if (*sta->top > *sta->bot && *stb->top < *stb->bot)
-// 		ft_command("RR", &sta, &stb);
-// }
-
-ssize_t	ft_delta(const int32_t value1, const int32_t value2, int32_t *array)
-{
-	ssize_t	i;
-	ssize_t	j;
-
-	i = 0;
-	j = 0;
-	while (value1 != array[i])
-		i++;
-	while (value2 != array[j])
-		j++;
-	return (j - i);
-}
-
-uint8_t	ft_swap(t_stack *sta, t_stack *stb, int32_t *sorted)
-{
-	uint8_t	swap;
 	size_t	i;
 
-	swap = 0;
-	if (*sta->top < *(sta->top - 1))
+	i = 0;
+	while (stb->bot[i] != target && i < stb->length)
+		i++;
+	if (stb->bot[i] != target)
+		return ;
+	if (i >= stb->length / 2)
 	{
-		i = 0;
-		while (sorted[i] != *sta->top)
-			i++;
-		if (*sta->bot != sorted[i + 1])
-			swap += 1;
+		while (*stb->top != target)
+			ft_command("RRB", sta, stb);
 	}
-	if (*stb->top > *(stb->top - 1))
+	else
 	{
-		i = 0;
-		while (sorted[i] != *stb->top)
-			i++;
-		if (*stb->bot != sorted[i - 1])
-			swap += 2;
-	}
-	return (swap);
-}
-
-void	ft_push_end(t_stack *sta, t_stack *stb, int32_t *sorted)
-{
-	uint8_t	swap;
-	uint8_t	status;
-
-	status = ft_sort_status(sta, stb);
-	while (status != 0)
-	{
-		swap = ft_swap(sta, stb, sorted);
-		if (swap == 3)
-			ft_command("SS", sta, stb);
-		else if (swap == 2)
-			ft_command("SB", sta, stb);
-		else if (swap == 1)
-			ft_command("SA", sta, stb);
-		status = ft_sort_status(sta, stb);
-		if (status == 3)
-			ft_command("RR", sta, stb);
-		else if (status == 2)
+		while (*stb->top != target)
 			ft_command("RB", sta, stb);
-		else if (status == 1)
-			ft_command("RA", sta, stb);
 	}
-	while (stb->length > 0)
-		ft_command("PA", sta, stb);
+	ft_command("PA", sta, stb);
 }
 
+void	ft_sort_mid(t_stack *sta, t_stack *stb, int32_t *array)
+{
+	t_median	median[16];
+	size_t		count;
+	size_t		length;
+	size_t		i;
+
+	i = 0;
+	median[i++] = ft_get_median(array, 0, sta->length + stb->length);
+	while (sta->length > 0)
+	{
+		median[++i] = ft_get_median(array, 0, sta->length);
+		ft_binary_push(sta, stb, median[i], 'B');
+	}
+	ft_sort_three(sta, stb, sta->length);
+	count = ft_command("XX", sta, stb);
+	array += sta->length;
+	length = stb->length / 2 + stb->length / 4;
+	while (stb->length > length)
+		ft_push_single(sta, stb, *array++);
+
+	// ----
+	ft_putnbr(count, 1);
+	write(1, ", ", 2);
+	ft_putnbr(ft_command("XX", sta, stb), 1);
+}
+
+void	ft_sort_start(t_stack *sta, t_stack *stb, int32_t *array)
+{
+	t_median	median;
+
+	median = ft_get_median(array, 0, sta->length);
+	while (median.count > 0)
+	{
+		if (*sta->top >= median.middle)
+		{
+			ft_command("PB", sta, stb);
+			if (*stb->top >= median.upper)
+				ft_command("RRB", sta, stb);
+			median.count--;
+		}
+		else
+			ft_command("RRA", sta, stb);
+	}
+	ft_sort_mid(sta, stb, array);
+}
+
+// Function to shuffle an array
+void shuffle(int *array, int size)
+{
+	srand(time(NULL));
+
+	for (int i = size - 1; i > 0; i--)
+	{
+		int j = rand() % (i + 1);
+
+		int temp = array[i];
+		array[i] = array[j];
+		array[j] = temp;
+	}
+}
+
+#define LENGTH 30
+int main()
+{
+	int32_t array[LENGTH];
+	int32_t array0[LENGTH];
+	int32_t arrays[LENGTH];
+
+	for (int i = 0; i < LENGTH; i++)
+		array[i] = i;
+	shuffle(array, LENGTH);
+	ft_memset(array0, 0, LENGTH * 4);
+	t_stack	stack_a = {array, array + LENGTH - 1, LENGTH};
+	t_stack	stack_b = {array0, array0, 0};
+	char	buffer[32];
+
+	ft_memcpy(arrays, array, LENGTH * 4);
+	ft_insertion_sort(arrays, LENGTH);
+	ft_sort_start(&stack_a, &stack_b, arrays);
+	// fn_print_stacks(&stack_a, &stack_b);
+	// while (1)
+	// {
+	// 	read(1, buffer, 32);
+	// 	buffer[3] = 0;
+	// 	ft_command(buffer, &stack_a, &stack_b);
+	// 	fn_print_stacks(&stack_a, &stack_b);
+	// }
+}

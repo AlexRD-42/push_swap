@@ -6,7 +6,7 @@
 /*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 10:34:46 by adeimlin          #+#    #+#             */
-/*   Updated: 2025/05/23 11:46:19 by adeimlin         ###   ########.fr       */
+/*   Updated: 2025/05/29 14:43:07 by adeimlin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,4 +105,30 @@ void	ft_putnbr(int64_t n, int fd)
 	if (sign == -1)
 		*(--ptr) = '-';
 	write(fd, ptr, array + 20 - ptr);
+}
+
+void	*ft_memset(void *dst_void, const uint8_t byte, size_t length)
+{
+	char	*dst;
+	size_t	word_byte;
+
+	dst = (char *) dst_void;
+	if (length >= 16)
+	{
+		word_byte = (0x0101010101010101 & UINTPTR_MAX) * byte;
+		while (((uintptr_t)dst & (sizeof(void*) - 1)) && length-- > 0)
+			*dst++ = byte;
+		while (length >= sizeof(void*))
+		{
+			*((uintptr_t *)dst) = word_byte;
+			dst += sizeof(void*);
+			length -= sizeof(void*);
+		}
+	}
+	while (length > 0)
+	{
+		*dst++ = byte;
+		length--;
+	}
+	return (dst_void);
 }
