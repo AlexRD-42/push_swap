@@ -6,7 +6,7 @@
 /*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 11:20:19 by adeimlin          #+#    #+#             */
-/*   Updated: 2025/05/29 19:22:51 by adeimlin         ###   ########.fr       */
+/*   Updated: 2025/05/30 10:59:01 by adeimlin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include <stddef.h>
 #include "push_swap.h"
 
-static void	ft_swap(char type, t_stack *a, t_stack *b)
+static uint8_t	ft_swap(char type, t_stack *a, t_stack *b)
 {
 	int32_t	temp;
 
@@ -30,9 +30,11 @@ static void	ft_swap(char type, t_stack *a, t_stack *b)
 		*b->top = *(b->top - 1);
 		*(b->top - 1) = temp;
 	}
+	return (((type == 'A' || type == 'S') && a->length > 1) ||
+			((type == 'B' || type == 'S') && b->length > 1));
 }
 
-static void	ft_push(char type, t_stack *a, t_stack *b)
+static uint8_t	ft_push(char type, t_stack *a, t_stack *b)
 {
 	if (type == 'A' && b->length > 0)
 	{
@@ -50,10 +52,11 @@ static void	ft_push(char type, t_stack *a, t_stack *b)
 	}
 	a->top = a->bot + a->length - (a->length != 0);
 	b->top = b->bot + b->length - (b->length != 0);
+	return ((type == 'A' && b->length > 0) || (type == 'B' && a->length > 0));
 }
 
 // First becomes Last (1234 -> 2341)
-static void	ft_rotate(char type, t_stack *a, t_stack *b)
+static uint8_t	ft_rotate(char type, t_stack *a, t_stack *b)
 {
 	int32_t	temp;
 
@@ -69,10 +72,12 @@ static void	ft_rotate(char type, t_stack *a, t_stack *b)
 		ft_memcpy(b->bot, b->bot + 1, (b->length - 1) * sizeof(int32_t));
 		*b->top = temp;
 	}
+	return (((type == 'A' || type == 'R') && a->length > 1) ||
+			((type == 'B' || type == 'R') && b->length > 1));
 }
 
 // Last becomes First (1234 -> 4123)
-static void	ft_rrotate(char type, t_stack *a, t_stack *b)
+static uint8_t	ft_rrotate(char type, t_stack *a, t_stack *b)
 {
 	int32_t	temp;
 
@@ -88,27 +93,29 @@ static void	ft_rrotate(char type, t_stack *a, t_stack *b)
 		ft_memcpy(b->bot + 1, b->bot, (b->length - 1) * sizeof(int32_t));
 		*b->bot = temp;
 	}
+	return (((type == 'A' || type == 'R') && a->length > 1) ||
+			((type == 'B' || type == 'R') && b->length > 1));
 }
 
-// Should have a write buffer
-// Could add load operation to have the stack as a static member
-// if cmd[0] == 'L' && cmd[1] == 'A', t_stack = 
-// Double instructions can be optimized later (optimize commands)
-size_t	ft_command(char *cmd, t_stack *sta, t_stack *stb)
+// Have the functions return CMD, to see if NOP to prune useless instructions
+size_t	ft_command(const char *cmd, t_stack *sta, t_stack *stb)
 {
-	static char		buffer[3][1024];
+	static uint8_t	buffer[1024][3];
 	static size_t	index = 0;
+	uint8_t			op;
 
-	index++;
-	write(1, cmd, 2 + (cmd[2] != 0));
-	write(1, "\n", 1);
+	op = 0;
+	if (cmd[0] == 'X')
+		ft_optimize(buffer, index);
 	if (cmd[0] == 'S')
-		ft_swap(cmd[1], sta, stb);
+		op = ft_swap(cmd[1], sta, stb);
 	else if (cmd[0] == 'P')
-		ft_push(cmd[1], sta, stb);
+		op = ft_push(cmd[1], sta, stb);
 	else if (cmd[0] == 'R' && cmd[2] < 'A')
-		ft_rotate(cmd[1], sta, stb);
+		op = ft_rotate(cmd[1], sta, stb);
 	else if (cmd[0] == 'R')
-		ft_rrotate(cmd[2], sta, stb);
+		op = ft_rrotate(cmd[2], sta, stb);
+	if (op != 0)
+		ft_memcpy(buffer[index++], cmd, 3);
 	return (index);
 }

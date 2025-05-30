@@ -6,7 +6,7 @@
 /*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 11:45:52 by adeimlin          #+#    #+#             */
-/*   Updated: 2025/05/29 18:50:19 by adeimlin         ###   ########.fr       */
+/*   Updated: 2025/05/30 11:16:26 by adeimlin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,6 +99,22 @@ uint8_t	ft_sort_status(t_stack *sta, t_stack *stb)
 		i++;
 	}
 	return (status);
+}
+
+void	ft_shuffle(int32_t *array, size_t size, int32_t seed)
+{
+	int32_t	temp;
+	size_t	j;
+
+	srand(seed);
+	while (size > 0)
+	{
+		size--;
+		j = rand() % (size + 1);
+		temp = array[size];
+		array[size] = array[j];
+		array[j] = temp;
+	}
 }
 
 void	ft_insertion_sort(int32_t *array, size_t length)

@@ -6,7 +6,7 @@
 /*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 19:07:35 by adeimlin          #+#    #+#             */
-/*   Updated: 2025/05/29 19:20:05 by adeimlin         ###   ########.fr       */
+/*   Updated: 2025/05/30 11:37:29 by adeimlin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,11 +35,11 @@ static void	ft_binary_push_b(t_stack *sta, t_stack *stb, t_median med)
 		else
 			ft_command("RRA", sta, stb);
 	}
-	while (num_rotates > 0)
-	{
-		ft_command("RB", sta, stb);
-		num_rotates--;
-	}
+	// while (num_rotates > 0)
+	// {
+	// 	ft_command("RB", sta, stb);
+	// 	num_rotates--;
+	// }
 }
 
 static void	ft_binary_push_a(t_stack *sta, t_stack *stb, t_median med)
@@ -49,10 +49,10 @@ static void	ft_binary_push_a(t_stack *sta, t_stack *stb, t_median med)
 	num_rotates = 0;
 	while (med.count > 0)
 	{
-		if (*stb->top >= med.middle)
+		if (*stb->top <= med.middle)
 		{
 			ft_command("PA", sta, stb);
-			if (*sta->top <= med.lower)
+			if (*sta->top >= med.lower)
 			{
 				ft_command("RRA", sta, stb);
 				num_rotates++;
@@ -62,11 +62,11 @@ static void	ft_binary_push_a(t_stack *sta, t_stack *stb, t_median med)
 		else
 			ft_command("RRB", sta, stb);
 	}
-	while (num_rotates > 0)
-	{
-		ft_command("RA", sta, stb);
-		num_rotates--;
-	}
+	// while (num_rotates > 0)
+	// {
+	// 	ft_command("RA", sta, stb);
+	// 	num_rotates--;
+	// }
 }
 
 void	ft_binary_push(t_stack *sta, t_stack *stb, t_median med, uint8_t mode)
