@@ -6,7 +6,7 @@
 /*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 11:20:19 by adeimlin          #+#    #+#             */
-/*   Updated: 2025/05/30 10:59:01 by adeimlin         ###   ########.fr       */
+/*   Updated: 2025/06/03 17:32:56 by adeimlin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,7 @@ static uint8_t	ft_rrotate(char type, t_stack *a, t_stack *b)
 // Have the functions return CMD, to see if NOP to prune useless instructions
 size_t	ft_command(const char *cmd, t_stack *sta, t_stack *stb)
 {
-	static uint8_t	buffer[1024][3];
+	static uint8_t	buffer[8192][3];
 	static size_t	index = 0;
 	uint8_t			op;
 
@@ -117,5 +117,7 @@ size_t	ft_command(const char *cmd, t_stack *sta, t_stack *stb)
 		op = ft_rrotate(cmd[2], sta, stb);
 	if (op != 0)
 		ft_memcpy(buffer[index++], cmd, 3);
+	else
+		// write(1, "\nBAD\n", 5);
 	return (index);
 }

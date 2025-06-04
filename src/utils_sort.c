@@ -6,7 +6,7 @@
 /*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 11:45:52 by adeimlin          #+#    #+#             */
-/*   Updated: 2025/05/30 11:16:26 by adeimlin         ###   ########.fr       */
+/*   Updated: 2025/06/03 16:43:44 by adeimlin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,19 @@ t_median	ft_get_median(int32_t *array, size_t start, size_t end)
 	median.lower = *(array + length / 4);
 	median.middle = *(array + length / 2 + (length % 2 != 0));
 	median.upper = *(array + length - length / 4);
+	return (median);
+}
+
+t_median	ft_get_median2(size_t start, size_t end)
+{
+	t_median	median;
+	size_t		length;
+
+	length = end - start;
+	median.count = length / 2;
+	median.lower = start + length / 4;
+	median.middle = start + length / 2;
+	median.upper = end - length / 4;
 	return (median);
 }
 

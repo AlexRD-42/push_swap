@@ -6,7 +6,7 @@
 /*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 19:07:35 by adeimlin          #+#    #+#             */
-/*   Updated: 2025/05/30 11:37:29 by adeimlin         ###   ########.fr       */
+/*   Updated: 2025/06/04 10:02:48 by adeimlin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,20 @@
 #include <stddef.h>
 #include <unistd.h>
 #include "push_swap.h"
+
+static void	ft_rotate_back(t_stack *dst, t_stack *src, size_t dst_rot, size_t src_rot)
+{
+	while (src_rot && dst_rot)
+	{
+		ft_command("RR", dst, src);
+		src_rot--;
+		dst_rot--;
+	}
+	while (src_rot-- > 0)
+		ft_command("RB", dst, src);
+	while (dst_rot-- > 0)
+		ft_command("RA", dst, src);
+}
 
 static void	ft_binary_push_b(t_stack *sta, t_stack *stb, t_median med)
 {
@@ -35,18 +49,23 @@ static void	ft_binary_push_b(t_stack *sta, t_stack *stb, t_median med)
 		else
 			ft_command("RRA", sta, stb);
 	}
-	// while (num_rotates > 0)
-	// {
-	// 	ft_command("RB", sta, stb);
-	// 	num_rotates--;
-	// }
+	while (num_rotates > 0)
+	{
+		ft_command("RB", sta, stb);
+		num_rotates--;
+	}
 }
 
+
+
+// One push where
 static void	ft_binary_push_a(t_stack *sta, t_stack *stb, t_median med)
 {
-	size_t	num_rotates;
+	size_t	dst_nrot;
+	size_t	src_nrot;
 
-	num_rotates = 0;
+	dst_nrot = 0;
+	src_nrot = 0;
 	while (med.count > 0)
 	{
 		if (*stb->top <= med.middle)
@@ -55,19 +74,20 @@ static void	ft_binary_push_a(t_stack *sta, t_stack *stb, t_median med)
 			if (*sta->top >= med.lower)
 			{
 				ft_command("RRA", sta, stb);
-				num_rotates++;
+				dst_nrot++;
 			}
 			med.count--;
 		}
 		else
+		{
 			ft_command("RRB", sta, stb);
+			src_nrot++;
+		}
 	}
-	// while (num_rotates > 0)
-	// {
-	// 	ft_command("RA", sta, stb);
-	// 	num_rotates--;
-	// }
+	ft_rotate_back(sta, stb, dst_nrot, src_nrot);
 }
+
+
 
 void	ft_binary_push(t_stack *sta, t_stack *stb, t_median med, uint8_t mode)
 {
