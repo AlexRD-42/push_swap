@@ -6,7 +6,7 @@
 /*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 10:47:43 by adeimlin          #+#    #+#             */
-/*   Updated: 2025/06/03 16:11:14 by adeimlin         ###   ########.fr       */
+/*   Updated: 2025/06/05 11:36:03 by adeimlin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,13 +23,28 @@ typedef struct s_stack
 	int32_t	*bot;
 	int32_t	*top;
 	size_t	length;
+	uint8_t	type;
 }	t_stack;
+
+typedef struct s_i32stats
+{
+	size_t	min_index;
+	size_t	max_index;
+	int32_t	min;
+	int32_t	max;
+}	t_i32stats;
 
 typedef struct s_conditions
 {
 	uint8_t	src;
 	uint8_t	dst;
 }	t_thr;
+
+typedef struct s_rots
+{
+	uint8_t	src;
+	uint8_t	dst;
+}	t_rots;
 
 typedef struct s_median
 {
@@ -49,10 +64,10 @@ void	ft_optimize(uint8_t cmd[1024][3], size_t index);
 
 void	ft_sort_three(t_stack *stack, size_t length);
 void	ft_push_single(t_stack *dst, t_stack *src, int32_t target);
-void	ft_binary_push(t_stack *sta, t_stack *stb, t_median med, uint8_t mode);
+size_t	ft_binary_push(t_stack *dst, t_stack *src, t_median med, uint8_t mode);
 void	ft_shuffle(int32_t *array, size_t size, int32_t seed); // CAREFUL
 
-uint8_t	ft_push_range_max(t_stack *dst, t_stack *src);
+void	ft_push_range(t_stack *dst, t_stack *src, uint8_t mode);
 
 int64_t	ft_delta_sum(int32_t *array, size_t size);
 int64_t	ft_delta_count(int32_t *array, size_t length);
@@ -66,6 +81,9 @@ int32_t	i32_abs_diff(int32_t number1, int32_t number2);
 int32_t	i32_minrange(const int32_t *number, size_t length);
 int32_t	i32_min(int32_t number1, int32_t number2);
 int32_t	i32_max(int32_t number1, int32_t number2);
+size_t	ft_get_min_index(int32_t *array, size_t length);
 size_t	get_entropy(t_stack *sta, t_stack *stb);
+int32_t	i32_maxrange(const int32_t *number, const size_t length);
+size_t	ft_get_max_index(int32_t *array, size_t length);
 
 #endif

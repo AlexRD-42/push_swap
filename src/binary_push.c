@@ -6,7 +6,7 @@
 /*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 19:07:35 by adeimlin          #+#    #+#             */
-/*   Updated: 2025/06/04 10:02:48 by adeimlin         ###   ########.fr       */
+/*   Updated: 2025/06/05 09:35:35 by adeimlin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,84 +15,103 @@
 #include <unistd.h>
 #include "push_swap.h"
 
-static void	ft_rotate_back(t_stack *dst, t_stack *src, size_t dst_rot, size_t src_rot)
+// 1 fix DST, 2 fix SRC, 3 fix BOTH
+static void	ft_rotate_back(t_stack *dst, t_stack *src, t_rots rots, uint8_t mode)
 {
-	while (src_rot && dst_rot)
+	while (mode == 3 && rots.src && rots.dst)
 	{
 		ft_command("RR", dst, src);
-		src_rot--;
-		dst_rot--;
+		rots.src--;
+		rots.dst--;
 	}
-	while (src_rot-- > 0)
-		ft_command("RB", dst, src);
-	while (dst_rot-- > 0)
+	while ((mode == 1 || mode == 3) && rots.dst-- > 0)
 		ft_command("RA", dst, src);
+	while ((mode == 2 || mode == 3) && rots.src-- > 0)
+		ft_command("RB", dst, src);
 }
 
-static void	ft_binary_push_b(t_stack *sta, t_stack *stb, t_median med)
+static t_thr	ft_get_thr(int32_t value, t_median med, uint8_t mode)
 {
-	size_t	num_rotates;
+	t_thr	thr;
 
-	num_rotates = 0;
-	while (med.count > 0)
+	if (mode == 0)
 	{
-		if (*sta->top >= med.middle)
-		{
-			ft_command("PB", sta, stb);
-			if (*stb->top <= med.upper)
-			{
-				ft_command("RRB", sta, stb);
-				num_rotates++;
-			}
-			med.count--;
-		}
-		else
-			ft_command("RRA", sta, stb);
+		thr.src = value <= med.middle;
+		thr.dst = value >= med.lower;
 	}
-	while (num_rotates > 0)
+	if (mode == 1)
 	{
-		ft_command("RB", sta, stb);
-		num_rotates--;
+		thr.src = value <= med.middle;
+		thr.dst = value <= med.lower;
 	}
+	else if (mode == 2)
+	{
+		thr.src = value >= med.middle;
+		thr.dst = value <= med.upper;
+	}
+	else if (mode == 3)
+	{
+		thr.src = value >= med.middle;
+		thr.dst = value >= med.upper;
+	}
+	return (thr);
 }
 
-
-
-// One push where
-static void	ft_binary_push_a(t_stack *sta, t_stack *stb, t_median med)
+static uint8_t	ft_push_is_valid(t_stack *src, t_median med, uint8_t mode)
 {
-	size_t	dst_nrot;
-	size_t	src_nrot;
+	size_t	i;
 
-	dst_nrot = 0;
-	src_nrot = 0;
-	while (med.count > 0)
+	i = 0;
+	if (mode)
 	{
-		if (*stb->top <= med.middle)
+		while (i < src->length)
 		{
-			ft_command("PA", sta, stb);
-			if (*sta->top >= med.lower)
-			{
-				ft_command("RRA", sta, stb);
-				dst_nrot++;
-			}
-			med.count--;
-		}
-		else
-		{
-			ft_command("RRB", sta, stb);
-			src_nrot++;
+			if (src->bot[i] >= med.middle)
+				return (1);
+			i++;
 		}
 	}
-	ft_rotate_back(sta, stb, dst_nrot, src_nrot);
-}
-
-
-
-void	ft_binary_push(t_stack *sta, t_stack *stb, t_median med, uint8_t mode)
-{
-	if (mode == 'A')
-		ft_binary_push_a(sta, stb, med);
 	else
-		ft_binary_push_b(sta, stb, med);
+	{
+		while (i < src->length)
+		{
+			if (src->bot[i] <= med.middle)
+				return (1);
+			i++;
+		}
+	}
+	return (0);
+}
+
+// Default is dst = A , src = B
+// Push A/B, Flip Logic, 0, 0, Rotate Back SRC, Rotate Back DST, Rotate SRC, Rotate DST
+size_t	ft_binary_push(t_stack *dst, t_stack *src, t_median med, uint8_t mode)
+{
+	size_t	num_pushes;
+	t_thr	thr;
+	t_rots	rots;
+
+	rots.dst = 0;
+	rots.src = 0;
+	num_pushes = 0;
+	mode += 64 * (dst->length == 0 && !(mode & 64));
+	while (ft_push_is_valid(src, med, mode & 128))
+	{
+		thr = ft_get_thr(*src->top, med, mode >> 6);
+		if (thr.src)
+		{
+			num_pushes += ft_command("PA", dst, src);
+			if (thr.dst && (mode & 1))
+			{
+				ft_command("RRA", dst, src);
+				rots.dst++;
+			}
+		}
+		else if (mode & 2)
+		{
+			ft_command("RRB", dst, src);
+			rots.src++;
+		}
+	}
+	ft_rotate_back(dst, src, rots, (mode & 12) >> 2);
 }

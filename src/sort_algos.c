@@ -6,7 +6,7 @@
 /*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 18:48:58 by adeimlin          #+#    #+#             */
-/*   Updated: 2025/06/03 12:02:44 by adeimlin         ###   ########.fr       */
+/*   Updated: 2025/06/04 16:48:40 by adeimlin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,24 +89,26 @@ void	ft_push_single(t_stack *dst, t_stack *src, int32_t target)
 // 	ft_push_single(dst, src, min);
 // }
 
-uint8_t	ft_push_range_max(t_stack *dst, t_stack *src)
+void	ft_push_range(t_stack *dst, t_stack *src, uint8_t mode)
 {
 	size_t	i;
 	size_t	j;
 	size_t	circ_index;
-	const int32_t	weight[5] = {6, 3, 0, 3, 6};
-	int32_t	max;
+	const int32_t	weight[5] = {0, 0, 0, 0, 0};
+	int32_t	value;
 
 	i = src->length - 3;
 	j = 0;
-	max = i % src->length;
+	value = i % src->length;
 	while (j < 5)
 	{
 		circ_index = i % src->length;
-		if (src->bot[circ_index] - weight[j] > src->bot[max])
-			max = circ_index;
+		if (mode == 0 && src->bot[circ_index] + weight[j] < src->bot[value])
+			value = circ_index;
+		else if (mode == 1 && src->bot[circ_index] - weight[j] > src->bot[value])
+			value = circ_index;
 		i++;
 		j++;
 	}
-	ft_push_single(dst, src, src->bot[max]);
+	ft_push_single(dst, src, src->bot[value]);
 }

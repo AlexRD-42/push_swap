@@ -6,7 +6,7 @@
 /*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 11:20:19 by adeimlin          #+#    #+#             */
-/*   Updated: 2025/06/03 17:32:56 by adeimlin         ###   ########.fr       */
+/*   Updated: 2025/06/05 10:56:17 by adeimlin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,11 +111,11 @@ size_t	ft_command(const char *cmd, t_stack *sta, t_stack *stb)
 		op = ft_swap(cmd[1], sta, stb);
 	else if (cmd[0] == 'P')
 		op = ft_push(cmd[1], sta, stb);
-	else if (cmd[0] == 'R' && cmd[2] < 'A')
+	else if (cmd[0] == 'R' && (cmd[1] == 'A' || cmd[1] == 'B' || cmd[1] == 'R'))
 		op = ft_rotate(cmd[1], sta, stb);
 	else if (cmd[0] == 'R')
 		op = ft_rrotate(cmd[2], sta, stb);
-	if (op != 0)
+	if (op != 0 && cmd[2] != 'X')
 		ft_memcpy(buffer[index++], cmd, 3);
 	else
 		// write(1, "\nBAD\n", 5);
