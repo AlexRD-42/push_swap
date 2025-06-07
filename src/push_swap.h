@@ -6,7 +6,7 @@
 /*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 10:47:43 by adeimlin          #+#    #+#             */
-/*   Updated: 2025/06/05 11:36:03 by adeimlin         ###   ########.fr       */
+/*   Updated: 2025/06/07 10:06:42 by adeimlin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,22 @@
 #include <stddef.h>
 #include <unistd.h>
 #include <stdlib.h>
+
+// typedef enum e_cmd
+// {
+// 	PA = 0,
+// 	PB = 1,
+// 	SA = 2,
+// 	SB = 3,
+// 	SS = 4,
+// 	RA = 5,
+// 	RB = 6,
+// 	RR = 7,
+// 	RRA = 8,
+// 	RRB = 9,
+// 	RRR = 10,
+// 	OPT = 11
+// }	t_cmd;
 
 typedef struct s_stack
 {
@@ -42,8 +58,9 @@ typedef struct s_conditions
 
 typedef struct s_rots
 {
-	uint8_t	src;
-	uint8_t	dst;
+	int64_t	src;
+	int64_t	dst;
+	int64_t	sum;
 }	t_rots;
 
 typedef struct s_median
@@ -67,8 +84,6 @@ void	ft_push_single(t_stack *dst, t_stack *src, int32_t target);
 size_t	ft_binary_push(t_stack *dst, t_stack *src, t_median med, uint8_t mode);
 void	ft_shuffle(int32_t *array, size_t size, int32_t seed); // CAREFUL
 
-void	ft_push_range(t_stack *dst, t_stack *src, uint8_t mode);
-
 int64_t	ft_delta_sum(int32_t *array, size_t size);
 int64_t	ft_delta_count(int32_t *array, size_t length);
 t_median	ft_get_median(int32_t *array, size_t start, size_t end);
@@ -85,5 +100,14 @@ size_t	ft_get_min_index(int32_t *array, size_t length);
 size_t	get_entropy(t_stack *sta, t_stack *stb);
 int32_t	i32_maxrange(const int32_t *number, const size_t length);
 size_t	ft_get_max_index(int32_t *array, size_t length);
+
+void    ft_find_lis(int32_t *array, size_t length, int32_t *lis_out, size_t *len_out);
+void    ft_find_lis2(int32_t *array, size_t length, int32_t *lis_out, size_t *len_out);
+void	ft_push_range(t_stack *dst, t_stack *src, uint8_t mode, t_median median);
+uint8_t	ft_push_is_valid(t_stack *src, t_median med, uint8_t mode);
+
+int64_t	i64_abs(int64_t number);
+int64_t	i64_min(int64_t number1, int64_t number2);
+int64_t	i64_max(int64_t number1, int64_t number2);
 
 #endif

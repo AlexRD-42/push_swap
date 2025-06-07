@@ -6,7 +6,7 @@
 /*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 16:35:21 by adeimlin          #+#    #+#             */
-/*   Updated: 2025/06/05 12:34:28 by adeimlin         ###   ########.fr       */
+/*   Updated: 2025/06/07 12:27:42 by adeimlin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,135 +92,141 @@ int32_t	ft_distance(t_stack *stack)
 	return(stack->bot[ft_get_min_index(array, stack->length)]);
 }
 
-void    ft_find_lis2(int32_t *array, size_t length, int32_t *lis_out, size_t *out_len)
+void	ft_push_valid(t_stack *src, t_stack *dst, int32_t *filter, size_t lut_len)
 {
-	int32_t	max_lis[1024];
-	int32_t	prev[1024];
-	size_t 	best_end = 0;
-	size_t	best_len = 1;
 	size_t	i;
-	size_t	j;
-
-	for (i = 0; i < length; ++i)
-	{
-		max_lis[i] = 1;
-		prev[i] = -1;
-		for (j = 0; j < i; ++j)
-			if (array[j] < array[i] && max_lis[j] + 1 > max_lis[i])
-			{
-				max_lis[i] = max_lis[j] + 1;
-				prev[i] = j;
-			}
-		if ((size_t)max_lis[i] > best_len)
-		{
-			best_len = max_lis[i];
-			best_end = i;
-		}
-	}
-	size_t k = best_end;
-	for (size_t idx = best_len; idx-- > 0; k = prev[k])
-		lis_out[idx] = array[k];
-	*out_len = best_len;
-}
-
-void	ft_find_lis(int32_t *array, size_t length)
-{
-	int32_t	lis_lengths[1024];
-	int32_t	aux_array[1024];
-	size_t	i;
-	size_t	j;
-	const size_t	length2 = length;
+	int32_t	lut[1024];
 
 	i = 0;
-	ft_memset(lis_lengths, 0, length * sizeof(size_t));
-	while (++i < length)
+	ft_memset(lut, 0, 1024 * sizeof(int32_t));
+	while (i < lut_len)
+		lut[filter[i++]] = 1;
+	while (src->length != lut_len)
 	{
-		j = 0;
-		while (j < i)
-		{
-			if (array[i] > array[j++])
-				lis_lengths[i]++;
-		}
-	}
-
-	i = 0;
-	while (length > 0)
-	{
-		length = ft_get_max_index(lis_lengths, length);
-		j = 0;
-		while (j < length2)
-		{
-			if (array[j] > array[length])
-				lis_lengths[j] = 0;
-			j++;
-		}
-		aux_array[i++] = array[length];
+		if (lut[*src->top] == 0)
+			ft_command("PB", src, dst);
+		else
+			ft_command("RRA", src, dst);
 	}
 }
 
-void	ft_stalin_sort(t_stack *sta, t_stack *stb)
+int64_t	moves_to_insert(int32_t *array, size_t length, int32_t value)
 {
-	int32_t	max_lis[1024];
-	size_t	lis_len;
 	size_t	i;
+	int32_t	prev;
+	int32_t	next;
 
 	i = 0;
-	while (i++ < sta->length)
+	while (i < length)
 	{
-		// ft_find_lis(sta->bot, sta->length);
-		ft_find_lis(sta->bot, sta->length);
-		// ft_find_lis2(sta->bot, sta->length, max_lis, &lis_len);
-		ft_command("RAX", sta, stb);
+		prev = array[(i + length - 1) % length];
+		next = array[i];
+		if ((value > prev && value < next) ||
+			(prev > next && (value > prev || value < next)))
+		{
+			if (i <= length / 2)
+				return ((int64_t) i);
+			else
+				return (-(int64_t)(length - i));
+		}
+		i++;
+	}
+	return (INT64_MAX);
+}
+
+void	min_moves(t_rots *min, int64_t dst_rots, int64_t src_rots)
+{
+	int64_t	sum;
+
+	if (dst_rots < 0 && src_rots < 0)
+		sum = i64_abs(i64_min(dst_rots, src_rots));
+	else if (dst_rots > 0 && src_rots > 0)
+		sum = i64_abs(i64_max(dst_rots, src_rots));
+	else
+		sum = i64_abs(dst_rots) + i64_abs(src_rots);
+	if (sum < min->sum)
+	{
+		min->dst = dst_rots;
+		min->src = src_rots;
+		min->sum = sum;
 	}
 }
 
+static void	ft_rotate_and_push(t_stack *dst, t_stack *src, t_rots rots)
+{
+	while ((rots.src > 0 && rots.dst > 0))
+	{
+		ft_command("RR", dst, src);
+		rots.src--;
+		rots.dst--;
+	}
+	while ((rots.src < 0 && rots.dst < 0))
+	{
+		ft_command("RRR", dst, src);
+		rots.src++;
+		rots.dst++;
+	}
+	while (rots.dst > 0 && rots.dst-- > 0)
+			ft_command("RA", dst, src);
+	while (rots.src > 0 && rots.src-- > 0)
+			ft_command("RB", dst, src);
+	while (rots.dst++ < 0)
+		ft_command("RRA", dst, src);
+	while (rots.src++ < 0)
+		ft_command("RRB", dst, src);
+	ft_command("PA", dst, src);
+}
+
+// You need to find how many RA/RRAs and RB/RRBs each element will have
+// To calculate the minimum moves, only rotations in the same direction can be double instructions
+void	ft_push_cheapest(t_stack *sta, t_stack *stb)
+{
+	int64_t	i;
+	int64_t	dst_rots;
+	t_rots	min;
+
+	min.sum = INT64_MAX;
+	i = 0;
+	while ((size_t) i <= stb->length / 2 && i < min.sum)
+	{
+		dst_rots = moves_to_insert(sta->bot, sta->length, stb->bot[i]);
+		min_moves(&min, dst_rots, i + 1);
+		dst_rots = moves_to_insert(sta->bot, sta->length, stb->bot[stb->length - 1 - i]);
+		min_moves(&min, dst_rots, -i);
+		i++;
+	}
+	ft_rotate_and_push(sta, stb, min);
+}
+
+void	ft_finish_rotate(t_stack *sta, t_stack *stb)
+{
+	if (sta->bot[0] >= (int32_t) sta->length)
+	{
+		while (sta->bot[0] != 0)
+			ft_command("RA", sta, stb);
+	}
+	else
+	{
+		while (sta->bot[0] != 0)
+			ft_command("RRA", sta, stb);
+	}
+}
+
+// Push A/B, Flip Logic, 0, 0, Rotate Back SRC, Rotate Back DST, Rotate SRC, Rotate DST
 void	ft_sort_start(t_stack *sta, t_stack *stb, int32_t *array)
 {
 	t_median	median;
-	size_t	i;
+	int32_t		lis_out[1024];
+	size_t		len_out;
 
-	ft_stalin_sort(sta, stb);
-	// while (sta->length > 3)
-	// 	ft_push_single(stb, sta, ft_distance(sta));
-	// while (stb->length > 3)
-	// 	ft_push_single(sta, stb, 1 / ft_distance(sta));
-	// ft_print(sta, stb);
-	// ft_binary_push(stb, sta, ft_get_mean(sta->bot, sta->length), 0b11000011);
-	// while (sta->length > 3)
-	// {
-	// 	ft_binary_push(stb, sta, ft_get_mean(sta->bot, sta->length), 0b10000011);
-	// }
-	// ft_sort_three(sta, sta->length);
-	// i = sta->length;
-	// while (stb->length > sta->length)
-	// 	ft_push_single(sta, stb, i++);
-	// ft_print(sta, stb);
+	ft_print(sta, stb);
+	ft_find_lis(sta->bot, sta->length, lis_out, &len_out);
+	ft_push_valid(sta, stb, lis_out, len_out);
+	while (stb->length > 0)
+		ft_push_cheapest(sta, stb);
+	ft_finish_rotate(sta, stb);
+	ft_print(sta, stb);
 }
-// Push A/B, Flip Logic, 0, 0, Rotate Back SRC, Rotate Back DST, Rotate SRC, Rotate DST
-// void	ft_sort_start(t_stack *sta, t_stack *stb, int32_t *array)
-// {
-// 	t_median	median;
-
-// 	ft_print(sta, stb);
-// 	median = ft_get_median(array, 0, sta->length);
-// 	ft_binary_push(stb, sta, median, 0b11000011);
-// 	ft_print(sta, stb);
-// 	median.lower = (median.middle + 75) / 2;
-// 	median.middle = 74;
-// 	ft_binary_push(sta, stb, median, 0b00000101);
-// 	ft_print(sta, stb);
-// 	while (sta->length > 3)
-// 	{
-// 		median = ft_get_median(array, 0, sta->length);
-// 		ft_binary_push(stb, sta, median, 0b10000001);
-// 		ft_print(sta, stb);
-// 	}
-
-// 	median = ft_get_median(array, i32_minrange(stb->bot, stb->length), 100);
-// 	ft_binary_push(sta, stb, median, 3);
-// 	ft_print(sta, stb);
-// 	// ft_sort_mid(sta, stb, array);
-// }
 
 void	ft_initialize(int32_t *array_a, int32_t *array_b, int32_t *array_s, size_t length)
 {

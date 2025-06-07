@@ -6,7 +6,7 @@
 /*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 18:48:58 by adeimlin          #+#    #+#             */
-/*   Updated: 2025/06/04 16:48:40 by adeimlin         ###   ########.fr       */
+/*   Updated: 2025/06/06 10:38:47 by adeimlin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,8 @@ void	ft_push_single(t_stack *dst, t_stack *src, int32_t target)
 // 	ft_push_single(dst, src, min);
 // }
 
-void	ft_push_range(t_stack *dst, t_stack *src, uint8_t mode)
+// Mode == 0 = min
+void	ft_push_range(t_stack *dst, t_stack *src, uint8_t mode, t_median median)
 {
 	size_t	i;
 	size_t	j;
@@ -110,5 +111,12 @@ void	ft_push_range(t_stack *dst, t_stack *src, uint8_t mode)
 		i++;
 		j++;
 	}
-	ft_push_single(dst, src, src->bot[value]);
+	if (src->bot[value] >= median.middle)
+	{
+		ft_push_single(dst, src, src->bot[value]);
+		if (dst->bot[value] <= median.upper)
+			ft_command("RRA", dst, src);
+	}
+	else
+		ft_command("RRB", dst, src);
 }

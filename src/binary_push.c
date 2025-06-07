@@ -6,7 +6,7 @@
 /*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 19:07:35 by adeimlin          #+#    #+#             */
-/*   Updated: 2025/06/05 09:35:35 by adeimlin         ###   ########.fr       */
+/*   Updated: 2025/06/06 10:32:29 by adeimlin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ static t_thr	ft_get_thr(int32_t value, t_median med, uint8_t mode)
 	return (thr);
 }
 
-static uint8_t	ft_push_is_valid(t_stack *src, t_median med, uint8_t mode)
+uint8_t	ft_push_is_valid(t_stack *src, t_median med, uint8_t mode)
 {
 	size_t	i;
 
