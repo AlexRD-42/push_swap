@@ -103,6 +103,30 @@ void	ft_push_start(t_stack *sta, t_stack *stb, t_median median)
 	}
 }
 
+
+void	ft_sort_mid(t_stack *sta, t_stack *stb, int32_t *array)
+{
+	t_median	median;
+	size_t		count;
+	size_t		length;
+	size_t		i;
+
+	i = 0;
+	ft_print(sta, stb);
+	while (sta->length > 3)
+	{
+		median = ft_get_median(array, 0, sta->length);
+		ft_binary_push(sta, stb, median, 'B');
+		ft_print(sta, stb);
+	}
+	ft_sort_three(sta, 3);
+	i = 90 * stb->length / 100;
+	while (stb->length > i)
+		ft_push_single(sta, stb, array[i++]);
+	ft_print(sta, stb);
+	ft_command("XX", sta, stb);
+}
+
 // void	ft_mid_sort(t_stack *sta, t_stack *stb, t_median median)
 // {
 // 	if (*sta->top > *sta->bot && *stb->top < *stb->bot)

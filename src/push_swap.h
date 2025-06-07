@@ -6,7 +6,7 @@
 /*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 10:47:43 by adeimlin          #+#    #+#             */
-/*   Updated: 2025/06/07 10:06:42 by adeimlin         ###   ########.fr       */
+/*   Updated: 2025/06/07 15:07:02 by adeimlin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ void	ft_optimize(uint8_t cmd[1024][3], size_t index);
 
 void	ft_sort_three(t_stack *stack, size_t length);
 void	ft_push_single(t_stack *dst, t_stack *src, int32_t target);
-size_t	ft_binary_push(t_stack *dst, t_stack *src, t_median med, uint8_t mode);
+void	ft_binary_push(t_stack *dst, t_stack *src, t_median med, uint8_t *lut);
 void	ft_shuffle(int32_t *array, size_t size, int32_t seed); // CAREFUL
 
 int64_t	ft_delta_sum(int32_t *array, size_t size);
@@ -109,5 +109,8 @@ uint8_t	ft_push_is_valid(t_stack *src, t_median med, uint8_t mode);
 int64_t	i64_abs(int64_t number);
 int64_t	i64_min(int64_t number1, int64_t number2);
 int64_t	i64_max(int64_t number1, int64_t number2);
+
+void	ft_push_cheapest(t_stack *sta, t_stack *stb);
+void	ft_push_valid(t_stack *src, t_stack *dst, int32_t *filter, size_t lut_len);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 12:41:11 by adeimlin          #+#    #+#             */
-/*   Updated: 2025/05/29 13:18:10 by adeimlin         ###   ########.fr       */
+/*   Updated: 2025/06/07 14:51:55 by adeimlin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,30 +15,30 @@
 #include <stdio.h>
 #include "push_swap.h"
 
-void	fn_print_stacks(const t_stack *a, const t_stack *b)
-{
-	size_t	i;
+// void	fn_print_stacks(const t_stack *a, const t_stack *b)
+// {
+// 	size_t	i;
 
-	printf("Stack A (%zu):\t", a->length);
-	i = 0;
-	while (i < a->length)
-	{
-		printf("%d", a->bot[i]);
-		i++;
-		if (i != a->length)
-			printf(", ", a->bot[i]);
-	}
-	printf("\nStack B (%zu):\t", b->length);
-	i = 0;
-	while (i < b->length)
-	{
-		printf("%d", b->bot[i]);
-		i++;
-		if (i != b->length)
-			printf(", ", b->bot[i]);
-	}
-	printf("\n-------\n");	
-}
+// 	printf("Stack A (%zu):\t", a->length);
+// 	i = 0;
+// 	while (i < a->length)
+// 	{
+// 		printf("%d", a->bot[i]);
+// 		i++;
+// 		if (i != a->length)
+// 			printf(", ", a->bot[i]);
+// 	}
+// 	printf("\nStack B (%zu):\t", b->length);
+// 	i = 0;
+// 	while (i < b->length)
+// 	{
+// 		printf("%d", b->bot[i]);
+// 		i++;
+// 		if (i != b->length)
+// 			printf(", ", b->bot[i]);
+// 	}
+// 	printf("\n-------\n");	
+// }
 
 // #define SIZE 16
 // int main()

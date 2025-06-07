@@ -6,7 +6,7 @@
 /*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/30 11:48:42 by adeimlin          #+#    #+#             */
-/*   Updated: 2025/06/07 10:06:33 by adeimlin         ###   ########.fr       */
+/*   Updated: 2025/06/07 14:51:17 by adeimlin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,6 @@ size_t	ft_get_max_index(int32_t *array, size_t length)
 	}
 	return (max);
 }
-
 
 int32_t	i32_minrange(const int32_t *number, const size_t length)
 {
