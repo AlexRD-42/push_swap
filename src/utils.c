@@ -6,7 +6,7 @@
 /*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 10:34:46 by adeimlin          #+#    #+#             */
-/*   Updated: 2025/06/08 11:10:44 by adeimlin         ###   ########.fr       */
+/*   Updated: 2025/06/08 16:54:08 by adeimlin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,13 +116,13 @@ void	*ft_memset(void *dst_void, const uint8_t byte, size_t length)
 	if (length >= 16)
 	{
 		word_byte = (0x0101010101010101 & UINTPTR_MAX) * byte;
-		while (((uintptr_t)dst & (sizeof(void*) - 1)) && length-- > 0)
+		while (((uintptr_t)dst & (sizeof(void *) - 1)) && length-- > 0)
 			*dst++ = byte;
-		while (length >= sizeof(void*))
+		while (length >= sizeof(void *))
 		{
 			*((uintptr_t *)dst) = word_byte;
-			dst += sizeof(void*);
-			length -= sizeof(void*);
+			dst += sizeof(void *);
+			length -= sizeof(void *);
 		}
 	}
 	while (length > 0)

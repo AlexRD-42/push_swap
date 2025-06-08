@@ -6,7 +6,7 @@
 /*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/07 14:47:22 by adeimlin          #+#    #+#             */
-/*   Updated: 2025/06/08 16:05:53 by adeimlin         ###   ########.fr       */
+/*   Updated: 2025/06/08 16:56:03 by adeimlin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,9 +29,9 @@ static void	rotate_and_push(t_stack *dst, t_stack *src, t_rots rots)
 		rots.dst--;
 	}
 	while (rots.dst < 0 && rots.dst++ < 0)
-			ft_command("ra", dst, src);
+		ft_command("ra", dst, src);
 	while (rots.src < 0 && rots.src++ < 0)
-			ft_command("rb", dst, src);
+		ft_command("rb", dst, src);
 	while (rots.dst-- > 0)
 		ft_command("rra", dst, src);
 	while (rots.src-- > 0)
@@ -50,8 +50,8 @@ static int64_t	moves_to_insert(int32_t *array, size_t length, int32_t value)
 	{
 		prev = array[(i + length - 1) % length];
 		next = array[i];
-		if ((value > prev && value < next) ||
-			(prev > next && (value > prev || value < next)))
+		if ((value > prev && value < next)
+			|| (prev > next && (value > prev || value < next)))
 		{
 			if (i <= length / 2)
 				return ((int64_t) i);
@@ -93,7 +93,7 @@ void	ft_push_cheapest(t_stack *sta, t_stack *stb)
 	{
 		dst_rots = moves_to_insert(sta->bot, sta->length, stb->bot[i]);
 		min_moves(&min, dst_rots, i + 1);
-		dst_rots = moves_to_insert(sta->bot, sta->length, stb->bot[stb->length - 1 - i]);
+		dst_rots = moves_to_insert(sta->bot, sta->length, stb->top[-i]);
 		min_moves(&min, dst_rots, -i);
 		i++;
 	}
