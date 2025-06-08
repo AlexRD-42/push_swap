@@ -6,7 +6,7 @@
 /*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 11:45:52 by adeimlin          #+#    #+#             */
-/*   Updated: 2025/06/03 16:43:44 by adeimlin         ###   ########.fr       */
+/*   Updated: 2025/06/08 12:58:20 by adeimlin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,120 +14,83 @@
 #include <unistd.h>
 #include "push_swap.h"
 
-t_median	ft_get_median(int32_t *array, size_t start, size_t end)
-{
-	t_median	median;
-	size_t		length;
-
-	length = end - start;
-	median.count = length / 2 + (length % 2 != 0);
-	length -= (end != start);
-	array += start;
-	median.lower = *(array + length / 4);
-	median.middle = *(array + length / 2 + (length % 2 != 0));
-	median.upper = *(array + length - length / 4);
-	return (median);
-}
-
-t_median	ft_get_median2(size_t start, size_t end)
-{
-	t_median	median;
-	size_t		length;
-
-	length = end - start;
-	median.count = length / 2;
-	median.lower = start + length / 4;
-	median.middle = start + length / 2;
-	median.upper = end - length / 4;
-	return (median);
-}
-
-int64_t	ft_delta_sum(int32_t *array, size_t length)
+void    ft_find_lis(int32_t *array, size_t length, int32_t *lis_out, size_t *len_out)
 {
 	size_t	i;
-	int64_t	sum;
+	size_t	j;
+	int32_t	max_lis[MAX_SIZE];
+	int32_t	prev[MAX_SIZE];
+	size_t 	best_end = 0;
+	size_t	best_len = 1;
 
-	sum = 0;
+	for (i = 0; i < length; ++i)
+	{
+		max_lis[i] = 1;
+		prev[i] = -1;
+		for (j = 0; j < i; ++j)
+			if (array[j] < array[i] && max_lis[j] + 1 > max_lis[i])
+			{
+				max_lis[i] = max_lis[j] + 1;
+				prev[i] = j;
+			}
+		if ((size_t)max_lis[i] > best_len)
+		{
+			best_len = max_lis[i];
+			best_end = i;
+		}
+	}
+	size_t k = best_end;
+	for (i = best_len; i-- > 0; k = prev[k])
+		lis_out[i] = array[k];
+	*len_out = best_len;
+}
+
+size_t	ft_get_entropy(t_stack *sta, t_stack *stb)
+{
+	size_t	i;
+	size_t	j;
+	size_t	total_entropy;
+
 	i = 0;
-	while (i < length / 2)
-	{
-		sum += array[i];
-		i++;
-	}
-	i += (length & 1);
-	while (i < length)
-	{
-		sum -= array[i];
-		i++;
-	}
-	return (sum);
-}
-
-// Need to implement a is_circular_sorted
-int64_t	ft_delta_count(int32_t *array, size_t length)
-{
-	size_t	i;
-	int64_t	count;
-
-	count = 0;
-	i = 1;
-	while (i < length / 2)
-	{
-		count += array[i - 1] > array[i];
-		i++;
-	}
-	i += (length & 1);
-	while (i < length)
-	{
-		count -= array[i - 1] > array[i];
-		i++;
-	}
-	return (count);
-}
-
-uint8_t	ft_sort_status(t_stack *sta, t_stack *stb)
-{
-	uint8_t	status;
-	size_t	i;
-
-	i = 1;
-	status = 0;
+	j = 0;
+	total_entropy = 0;
 	while (i < sta->length)
 	{
-		if (sta->bot[i - 1] > sta->bot[i])
-		{
-			status += 1;
-			break ;
-		}
+		total_entropy += i64_absdiff(i, sta->bot[i]);
 		i++;
 	}
-	i = 1;
-	while (i < stb->length)
+	j = stb->length;
+	while (j > 0)
 	{
-		if (stb->bot[i - 1] < stb->bot[i])
-		{
-			status += 2;
-			break ;
-		}
+		total_entropy += i64_absdiff(i, stb->bot[j - 1]);
+		j--;
 		i++;
 	}
-	return (status);
+	return (total_entropy);
 }
 
-void	ft_shuffle(int32_t *array, size_t size, int32_t seed)
+t_med	ft_get_median(int32_t *array, size_t length, uint8_t *lut)
 {
-	int32_t	temp;
-	size_t	j;
+	t_med	med;
+	int32_t	min;
+	int32_t	max;
+	size_t	i;
 
-	srand(seed);
-	while (size > 0)
+	i = 0;
+	min = INT32_MAX;
+	max = 0;
+	while (i < length)
 	{
-		size--;
-		j = rand() % (size + 1);
-		temp = array[size];
-		array[size] = array[j];
-		array[j] = temp;
+		if (lut[array[i]] == 0 && array[i] < min)
+			min = array[i];
+		if (lut[array[i]] == 0 && array[i] > max)
+			max = array[i];
+		i++;
 	}
+	med.middle = min + (max - min) / 2;
+	med.lower = min + (max - min) / 4;
+	med.upper = max - (max - min) / 4;
+	return (med);
 }
 
 void	ft_insertion_sort(int32_t *array, size_t length)

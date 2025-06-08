@@ -6,13 +6,13 @@
 /*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 10:34:46 by adeimlin          #+#    #+#             */
-/*   Updated: 2025/05/29 14:43:07 by adeimlin         ###   ########.fr       */
+/*   Updated: 2025/06/08 11:10:44 by adeimlin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdint.h>
 #include <unistd.h>
-// Prevent overflows? Checking number length would require a pre processing step
+
 int64_t	ft_atoi(const char *num_str)
 {
 	int64_t	number;

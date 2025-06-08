@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   greedy.c                                           :+:      :+:    :+:   */
+/*   push_cheapest.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/07 14:47:22 by adeimlin          #+#    #+#             */
-/*   Updated: 2025/06/07 15:07:46 by adeimlin         ###   ########.fr       */
+/*   Updated: 2025/06/08 15:28:40 by adeimlin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,25 +18,25 @@ static void	rotate_and_push(t_stack *dst, t_stack *src, t_rots rots)
 {
 	while ((rots.src > 0 && rots.dst > 0))
 	{
-		ft_command("RR", dst, src);
+		ft_command("rr", dst, src);
 		rots.src--;
 		rots.dst--;
 	}
 	while ((rots.src < 0 && rots.dst < 0))
 	{
-		ft_command("RRR", dst, src);
+		ft_command("rrr", dst, src);
 		rots.src++;
 		rots.dst++;
 	}
 	while (rots.dst > 0 && rots.dst-- > 0)
-			ft_command("RA", dst, src);
+			ft_command("ra", dst, src);
 	while (rots.src > 0 && rots.src-- > 0)
-			ft_command("RB", dst, src);
+			ft_command("rb", dst, src);
 	while (rots.dst++ < 0)
-		ft_command("RRA", dst, src);
+		ft_command("rra", dst, src);
 	while (rots.src++ < 0)
-		ft_command("RRB", dst, src);
-	ft_command("PA", dst, src);
+		ft_command("rrb", dst, src);
+	ft_command("pa", dst, src);
 }
 
 static int64_t	moves_to_insert(int32_t *array, size_t length, int32_t value)
@@ -81,8 +81,6 @@ static void	min_moves(t_rots *min, int64_t dst_rots, int64_t src_rots)
 	}
 }
 
-// You need to find how many RA/RRAs and RB/RRBs each element will have
-// To calculate the minimum moves, only rotations in the same direction can be double instructions
 void	ft_push_cheapest(t_stack *sta, t_stack *stb)
 {
 	int64_t	i;
@@ -101,21 +99,3 @@ void	ft_push_cheapest(t_stack *sta, t_stack *stb)
 	}
 	rotate_and_push(sta, stb, min);
 }
-
-// void	ft_push_valid(t_stack *src, t_stack *dst, int32_t *filter, size_t lut_len)
-// {
-// 	size_t	i;
-// 	int32_t	lut[1024];
-
-// 	i = 0;
-// 	ft_memset(lut, 0, 1024 * sizeof(int32_t));
-// 	while (i < lut_len)
-// 		lut[filter[i++]] = 1;
-// 	while (src->length > lut_len)
-// 	{
-// 		if (lut[*src->top] == 0)
-// 			ft_command("PB", src, dst);
-// 		else
-// 			ft_command("RRA", src, dst);
-// 	}
-// }
