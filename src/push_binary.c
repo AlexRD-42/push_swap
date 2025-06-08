@@ -6,7 +6,7 @@
 /*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 19:07:35 by adeimlin          #+#    #+#             */
-/*   Updated: 2025/06/08 15:30:10 by adeimlin         ###   ########.fr       */
+/*   Updated: 2025/06/08 16:06:45 by adeimlin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,9 +39,9 @@ void	ft_binary_push(t_stack *sta, t_stack *stb, t_med med, uint8_t *lut)
 		{
 			ft_command("pb", sta, stb);
 			if ((mode && *stb->top <= med.upper) || (!mode && *stb->top >= med.upper))
-				ft_command("rrb", sta, stb);
+				ft_command("rb", sta, stb);
 		}
 		else
-			ft_command("rra", sta, stb);
+			ft_command("ra", sta, stb);
 	}
 }

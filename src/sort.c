@@ -6,7 +6,7 @@
 /*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 16:35:21 by adeimlin          #+#    #+#             */
-/*   Updated: 2025/06/08 14:39:41 by adeimlin         ###   ########.fr       */
+/*   Updated: 2025/06/08 16:41:33 by adeimlin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,26 +14,54 @@
 #include <stddef.h>
 #include "push_swap.h"
 
-// static void ft_print(t_stack *sta, t_stack *stb)
-// {
-// 	ft_putnbr(ft_command("000", sta, stb), 1);
-// 	write(1, ", ", 2);
-// 	ft_putnbr(ft_get_entropy(sta, stb), 1);
-// 	write(1, "\n", 1);
-// }
-
 static void	finish_rotate(t_stack *sta, t_stack *stb)
 {
-	if (sta->bot[0] >= (int32_t) sta->length)
-	{
-		while (sta->bot[0] != 0)
-			ft_command("ra", sta, stb);
-	}
-	else
+	if (sta->bot[0] >= (int32_t) sta->length / 2)
 	{
 		while (sta->bot[0] != 0)
 			ft_command("rra", sta, stb);
 	}
+	else
+	{
+		while (sta->bot[0] != 0)
+			ft_command("ra", sta, stb);
+	}
+}
+
+static void	flip_order(int32_t *array, size_t length)
+{
+	size_t	i;
+
+	i = 0;
+	while (i < length)
+	{
+		array[i] = length - 1 - array[i];
+		i++;
+	}
+}
+
+void	ft_initialize(t_stack *sta, t_stack *stb, size_t length)
+{
+	size_t	i;
+	size_t	j;
+
+	i = 0;
+	ft_memcpy(stb->bot, sta->bot, length * sizeof(int32_t));
+	ft_insertion_sort(stb->bot, length);
+	while (i < length)
+	{
+		j = 0;
+		while (j < length && stb->bot[j] != sta->bot[i])
+			j++;
+		sta->bot[i] = j;
+		i++;
+	}
+	ft_memset(stb->bot, 0, MAX_SIZE * sizeof(int32_t));
+	sta->length = length;
+	sta->top = sta->bot + length - 1;
+	stb->length = 0;
+	stb->top = stb->bot;
+	flip_order(sta->bot, sta->length);
 }
 
 size_t	ft_sort(t_stack *sta, t_stack *stb)
@@ -58,27 +86,4 @@ size_t	ft_sort(t_stack *sta, t_stack *stb)
 		ft_push_cheapest(sta, stb);
 	finish_rotate(sta, stb);
 	return (ft_command("000", sta, stb));
-}
-
-void	ft_initialize(t_stack *sta, t_stack *stb, size_t length)
-{
-	size_t	i;
-	size_t	j;
-
-	i = 0;
-	ft_memcpy(stb->bot, sta->bot, length * sizeof(int32_t));
-	ft_insertion_sort(stb->bot, length);
-	while (i < length)
-	{
-		j = 0;
-		while (j < length && stb->bot[j] != sta->bot[i])
-			j++;
-		sta->bot[i] = j;
-		i++;
-	}
-	ft_memset(stb->bot, 0, MAX_SIZE * sizeof(int32_t));
-	sta->length = length;
-	sta->top = sta->bot + length - 1;
-	stb->length = 0;
-	stb->top = stb->bot;
 }

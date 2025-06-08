@@ -6,7 +6,7 @@
 /*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/07 14:47:22 by adeimlin          #+#    #+#             */
-/*   Updated: 2025/06/08 15:28:40 by adeimlin         ###   ########.fr       */
+/*   Updated: 2025/06/08 16:05:53 by adeimlin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,25 +16,25 @@
 
 static void	rotate_and_push(t_stack *dst, t_stack *src, t_rots rots)
 {
-	while ((rots.src > 0 && rots.dst > 0))
-	{
-		ft_command("rr", dst, src);
-		rots.src--;
-		rots.dst--;
-	}
 	while ((rots.src < 0 && rots.dst < 0))
 	{
-		ft_command("rrr", dst, src);
+		ft_command("rr", dst, src);
 		rots.src++;
 		rots.dst++;
 	}
-	while (rots.dst > 0 && rots.dst-- > 0)
+	while ((rots.src > 0 && rots.dst > 0))
+	{
+		ft_command("rrr", dst, src);
+		rots.src--;
+		rots.dst--;
+	}
+	while (rots.dst < 0 && rots.dst++ < 0)
 			ft_command("ra", dst, src);
-	while (rots.src > 0 && rots.src-- > 0)
+	while (rots.src < 0 && rots.src++ < 0)
 			ft_command("rb", dst, src);
-	while (rots.dst++ < 0)
+	while (rots.dst-- > 0)
 		ft_command("rra", dst, src);
-	while (rots.src++ < 0)
+	while (rots.src-- > 0)
 		ft_command("rrb", dst, src);
 	ft_command("pa", dst, src);
 }

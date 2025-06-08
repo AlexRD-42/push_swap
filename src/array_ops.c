@@ -6,7 +6,7 @@
 /*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 11:20:19 by adeimlin          #+#    #+#             */
-/*   Updated: 2025/06/08 15:27:38 by adeimlin         ###   ########.fr       */
+/*   Updated: 2025/06/08 16:40:42 by adeimlin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,27 +67,6 @@ static uint8_t	ft_rotate(char type, t_stack *a, t_stack *b)
 
 	if ((type == 'a' || type == 'r') && a->length > 1)
 	{
-		temp = *a->bot;
-		ft_memcpy(a->bot, a->bot + 1, (a->length - 1) * sizeof(int32_t));
-		*a->top = temp;
-	}
-	if ((type == 'b' || type == 'r') && b->length > 1)
-	{
-		temp = *b->bot;
-		ft_memcpy(b->bot, b->bot + 1, (b->length - 1) * sizeof(int32_t));
-		*b->top = temp;
-	}
-	return (((type == 'a' || type == 'r') && a->length > 1) ||
-			((type == 'b' || type == 'r') && b->length > 1));
-}
-
-// Last becomes First (1234 -> 4123)
-static uint8_t	ft_rrotate(char type, t_stack *a, t_stack *b)
-{
-	int32_t	temp;
-
-	if ((type == 'a' || type == 'r') && a->length > 1)
-	{
 		temp = *a->top;
 		ft_memcpy(a->bot + 1, a->bot, (a->length - 1) * sizeof(int32_t));
 		*a->bot = temp;
@@ -102,15 +81,38 @@ static uint8_t	ft_rrotate(char type, t_stack *a, t_stack *b)
 			((type == 'b' || type == 'r') && b->length > 1));
 }
 
+// Last becomes First (1234 -> 4123)
+static uint8_t	ft_rrotate(char type, t_stack *a, t_stack *b)
+{
+	int32_t	temp;
+
+	if ((type == 'a' || type == 'r') && a->length > 1)
+	{
+		temp = *a->bot;
+		ft_memcpy(a->bot, a->bot + 1, (a->length - 1) * sizeof(int32_t));
+		*a->top = temp;
+	}
+	if ((type == 'b' || type == 'r') && b->length > 1)
+	{
+		temp = *b->bot;
+		ft_memcpy(b->bot, b->bot + 1, (b->length - 1) * sizeof(int32_t));
+		*b->top = temp;
+	}
+	return (((type == 'a' || type == 'r') && a->length > 1) ||
+			((type == 'b' || type == 'r') && b->length > 1));
+}
+
 size_t	ft_command(const char *cmd, t_stack *sta, t_stack *stb)
 {
 	static size_t	index = 0;
 	uint8_t			op;
 
 	op = 0;
-	if (cmd[0] == 'X')
+	if (cmd[0] == '_')
+		cmd++;
+	if (cmd[0] == 'C' && cmd[1] == 'L' && cmd[2] == 'R')
 		index = 0;
-	if (cmd[0] == 's')
+	else if (cmd[0] == 's')
 		op = ft_swap(cmd[1], sta, stb);
 	else if (cmd[0] == 'p')
 		op = ft_push(cmd[1], sta, stb);
@@ -118,7 +120,7 @@ size_t	ft_command(const char *cmd, t_stack *sta, t_stack *stb)
 		op = ft_rrotate(cmd[2], sta, stb);
 	else if (cmd[0] == 'r' && (cmd[1] == 'a' || cmd[1] == 'b' || cmd[1] == 'r'))
 		op = ft_rotate(cmd[1], sta, stb);
-	if (op != 0 && cmd[2] != 'X')
+	if (op != 0 && cmd[0] != '_')
 	{
 		write(1, cmd, 2 + (cmd[2] != 0));
 		write(1, "\n", 1);
