@@ -6,7 +6,7 @@
             "type": "cppdbg",
             "request": "launch",
             "program": "${workspaceFolder}/main", // Replace with your executable's name
-            "args": [1674 32920 24286 177 4010 8868 27847 10730 38675 45081], // Add your arguments here
+            "args": [45447 7067 35440 44768 19890 46673 31394], // Add your arguments here
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}/src",
             "environment": [],

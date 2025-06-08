@@ -6,7 +6,7 @@
 /*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 10:34:46 by adeimlin          #+#    #+#             */
-/*   Updated: 2025/06/08 16:54:08 by adeimlin         ###   ########.fr       */
+/*   Updated: 2025/06/08 20:49:44 by adeimlin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,8 @@ int64_t	ft_atoi(const char *num_str)
 	return (sign * number);
 }
 
-static void	*ft_memrcpy(void *dst_void, const void *src_void, size_t length)
+static
+void	*ft_memrcpy(void *dst_void, const void *src_void, size_t length)
 {
 	char		*dst;
 	const char	*src = ((const char *) src_void) + length;

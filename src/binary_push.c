@@ -1,21 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   sort_binary_push.c                                 :+:      :+:    :+:   */
+/*   binary_push.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 19:07:35 by adeimlin          #+#    #+#             */
-/*   Updated: 2025/06/08 17:03:51 by adeimlin         ###   ########.fr       */
+/*   Updated: 2025/06/08 20:17:46 by adeimlin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdint.h>
 #include <stddef.h>
-#include <unistd.h>
 #include "push_swap.h"
 
-static uint8_t	push_is_valid(t_stack *stack, t_med med, uint8_t *lut)
+static
+uint8_t	push_is_valid(t_stack *stack, t_med med, uint8_t *lut)
 {
 	size_t	i;
 
@@ -38,7 +38,8 @@ void	ft_binary_push(t_stack *sta, t_stack *stb, t_med med, uint8_t *lut)
 		if (*sta->top >= med.middle && !lut[*sta->top])
 		{
 			ft_command("pb", sta, stb);
-			if ((mode && *stb->top <= med.upper) || (!mode && *stb->top >= med.upper))
+			if ((mode && *stb->top <= med.upper)
+				|| (!mode && *stb->top >= med.upper))
 				ft_command("rb", sta, stb);
 		}
 		else

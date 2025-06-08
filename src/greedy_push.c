@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   push_cheapest.c                                    :+:      :+:    :+:   */
+/*   greedy_push.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/07 14:47:22 by adeimlin          #+#    #+#             */
-/*   Updated: 2025/06/08 16:56:03 by adeimlin         ###   ########.fr       */
+/*   Updated: 2025/06/08 20:18:06 by adeimlin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,8 @@
 #include <stddef.h>
 #include "push_swap.h"
 
-static void	rotate_and_push(t_stack *dst, t_stack *src, t_rots rots)
+static
+void	rotate_and_push(t_stack *dst, t_stack *src, t_rots rots)
 {
 	while ((rots.src < 0 && rots.dst < 0))
 	{
@@ -39,7 +40,8 @@ static void	rotate_and_push(t_stack *dst, t_stack *src, t_rots rots)
 	ft_command("pa", dst, src);
 }
 
-static int64_t	moves_to_insert(int32_t *array, size_t length, int32_t value)
+static
+int64_t	moves_to_insert(int32_t *array, size_t length, int32_t value)
 {
 	size_t	i;
 	int32_t	prev;
@@ -63,7 +65,8 @@ static int64_t	moves_to_insert(int32_t *array, size_t length, int32_t value)
 	return (INT64_MAX);
 }
 
-static void	min_moves(t_rots *min, int64_t dst_rots, int64_t src_rots)
+static
+void	min_moves(t_rots *min, int64_t dst_rots, int64_t src_rots)
 {
 	int64_t	sum;
 

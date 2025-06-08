@@ -26,6 +26,30 @@ int32_t	ft_distance(t_stack *stack)
 	return(stack->bot[ft_get_min_index(array, stack->length)]);
 }
 
+size_t	ft_get_entropy(t_stack *sta, t_stack *stb)
+{
+	size_t	i;
+	size_t	j;
+	size_t	total_entropy;
+
+	i = 0;
+	j = 0;
+	total_entropy = 0;
+	while (i < sta->length)
+	{
+		total_entropy += i64_absdiff(i, sta->bot[i]);
+		i++;
+	}
+	j = stb->length;
+	while (j > 0)
+	{
+		total_entropy += i64_absdiff(i, stb->bot[j - 1]);
+		j--;
+		i++;
+	}
+	return (total_entropy);
+}
+
 t_median	ft_get_median(int32_t *array, size_t start, size_t end)
 {
 	t_median	median;

@@ -6,7 +6,7 @@
 /*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 16:35:21 by adeimlin          #+#    #+#             */
-/*   Updated: 2025/06/08 16:41:33 by adeimlin         ###   ########.fr       */
+/*   Updated: 2025/06/08 20:18:27 by adeimlin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,8 @@
 #include <stddef.h>
 #include "push_swap.h"
 
-static void	finish_rotate(t_stack *sta, t_stack *stb)
+static
+void	finish_rotate(t_stack *sta, t_stack *stb)
 {
 	if (sta->bot[0] >= (int32_t) sta->length / 2)
 	{
@@ -28,7 +29,8 @@ static void	finish_rotate(t_stack *sta, t_stack *stb)
 	}
 }
 
-static void	flip_order(int32_t *array, size_t length)
+static
+void	flip_order(int32_t *array, size_t length)
 {
 	size_t	i;
 
@@ -68,16 +70,10 @@ size_t	ft_sort(t_stack *sta, t_stack *stb)
 {
 	t_med	median;
 	uint8_t	lut[MAX_SIZE];
-	int32_t	lis_out[MAX_SIZE];
-	size_t	len_out;
-	size_t	i;
+	size_t	lis_length;
 
-	i = 0;
-	ft_find_lis(sta->bot, sta->length, lis_out, &len_out);
-	ft_memset(lut, 0, MAX_SIZE * sizeof(uint8_t));
-	while (i < len_out)
-		lut[lis_out[i++]] = 1;
-	while (sta->length > len_out)
+	lis_length = ft_find_lis(sta, lut);
+	while (sta->length > lis_length)
 	{
 		median = ft_get_median(sta->bot, sta->length, lut);
 		ft_binary_push(sta, stb, median, lut);

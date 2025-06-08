@@ -6,7 +6,7 @@
 /*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 10:47:43 by adeimlin          #+#    #+#             */
-/*   Updated: 2025/06/08 17:08:15 by adeimlin         ###   ########.fr       */
+/*   Updated: 2025/06/08 20:51:07 by adeimlin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,6 @@
 # define MAX_SIZE 512
 # include <stdint.h>
 # include <stddef.h>
-# include <unistd.h>
-# include <stdlib.h>
 
 typedef struct s_stack
 {
@@ -51,12 +49,12 @@ void	ft_binary_push(t_stack *dst, t_stack *src, t_med med, uint8_t *lut);
 void	ft_push_cheapest(t_stack *sta, t_stack *stb);
 
 void	ft_insertion_sort(int32_t *array, size_t length);
-size_t	ft_get_entropy(t_stack *sta, t_stack *stb);
 t_med	ft_get_median(int32_t *array, size_t length, uint8_t *lut);
-void	ft_find_lis(int32_t *array, size_t length, int32_t *lis_out, size_t *len_out);
+size_t	ft_find_lis(t_stack *sta, uint8_t *lis_out);
 
 int64_t	i64_min(int64_t number1, int64_t number2);
 int64_t	i64_max(int64_t number1, int64_t number2);
 int64_t	i64_abs(int64_t number);
 int64_t	i64_absdiff(int64_t number1, int64_t number2);
+size_t	ft_get_max_index(int32_t *array, size_t length);
 #endif

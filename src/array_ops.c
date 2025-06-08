@@ -6,15 +6,17 @@
 /*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 11:20:19 by adeimlin          #+#    #+#             */
-/*   Updated: 2025/06/08 16:50:32 by adeimlin         ###   ########.fr       */
+/*   Updated: 2025/06/08 20:55:41 by adeimlin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdint.h>
 #include <stddef.h>
+#include <unistd.h>
 #include "push_swap.h"
 
-static uint8_t	ft_swap(char type, t_stack *a, t_stack *b)
+static
+uint8_t	ft_swap(char type, t_stack *a, t_stack *b)
 {
 	int32_t	temp;
 	uint8_t	return_value;
@@ -37,7 +39,8 @@ static uint8_t	ft_swap(char type, t_stack *a, t_stack *b)
 	return (return_value);
 }
 
-static uint8_t	ft_push(char type, t_stack *a, t_stack *b)
+static
+uint8_t	ft_push(char type, t_stack *a, t_stack *b)
 {
 	uint8_t	return_value;
 
@@ -64,7 +67,8 @@ static uint8_t	ft_push(char type, t_stack *a, t_stack *b)
 }
 
 // First becomes Last (1234 -> 2341)
-static uint8_t	ft_rotate(char type, t_stack *a, t_stack *b)
+static
+uint8_t	ft_rotate(char type, t_stack *a, t_stack *b)
 {
 	int32_t	temp;
 	uint8_t	return_value;
@@ -88,7 +92,8 @@ static uint8_t	ft_rotate(char type, t_stack *a, t_stack *b)
 }
 
 // Last becomes First (1234 -> 4123)
-static uint8_t	ft_rrotate(char type, t_stack *a, t_stack *b)
+static
+uint8_t	ft_rrotate(char type, t_stack *a, t_stack *b)
 {
 	int32_t	temp;
 	uint8_t	return_value;
