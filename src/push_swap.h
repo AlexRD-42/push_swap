@@ -6,7 +6,7 @@
 /*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 10:47:43 by adeimlin          #+#    #+#             */
-/*   Updated: 2025/06/09 17:55:15 by adeimlin         ###   ########.fr       */
+/*   Updated: 2025/06/09 19:54:01 by adeimlin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ void	ft_binary_push(t_stack *dst, t_stack *src, t_med med, uint8_t *lut);
 void	ft_push_cheapest(t_stack *sta, t_stack *stb);
 int		parse_duplicates(int32_t *array, size_t length);
 int		parse_input(char **argv, int argc, int32_t *array, size_t length);
+uint8_t	is_sorted_asc(const t_stack *sta, const t_stack *stb);
 
 void	ft_insertion_sort(int32_t *array, size_t length);
 t_med	ft_get_median(int32_t *array, size_t length, uint8_t *lut);

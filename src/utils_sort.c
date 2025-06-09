@@ -6,7 +6,7 @@
 /*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 11:45:52 by adeimlin          #+#    #+#             */
-/*   Updated: 2025/06/09 18:11:03 by adeimlin         ###   ########.fr       */
+/*   Updated: 2025/06/09 20:06:27 by adeimlin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,4 +103,20 @@ void	ft_insertion_sort(int32_t *array, size_t length)
 		array[j] = key;
 		i++;
 	}
+}
+
+uint8_t	is_sorted_asc(const t_stack *sta, const t_stack *stb)
+{
+	size_t	i;
+
+	if (stb->length > 0)
+		return (0);
+	i = 1;
+	while (i < sta->length)
+	{
+		if (sta->bot[i - 1] > sta->bot[i])
+			return (0);
+		i++;
+	}
+	return (1);
 }

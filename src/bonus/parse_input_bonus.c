@@ -6,7 +6,7 @@
 /*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 10:34:04 by adeimlin          #+#    #+#             */
-/*   Updated: 2025/06/09 16:34:27 by adeimlin         ###   ########.fr       */
+/*   Updated: 2025/06/09 20:00:54 by adeimlin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ int	parse_input(char **argv, int argc, int32_t *array, size_t length)
 	while (--argc > 0)
 	{
 		str = argv[argc];
-		if (*str == '-')
+		if (*str == '-' && str[1] >= '0' && str[1] <= '9')
 			str++;
 		while (*str != 0)
 		{

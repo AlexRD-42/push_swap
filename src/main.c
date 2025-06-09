@@ -6,7 +6,7 @@
 /*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 16:35:21 by adeimlin          #+#    #+#             */
-/*   Updated: 2025/06/09 19:34:54 by adeimlin         ###   ########.fr       */
+/*   Updated: 2025/06/09 20:06:22 by adeimlin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,9 @@ int	main(int argc, char **argv)
 	sta.bot = array_a;
 	stb.bot = array_b;
 	ft_initialize(&sta, &stb, argc - 1);
-	if (sta.length <= 2 && sta.bot < sta.top)
+	if (is_sorted_asc(&sta, &stb))
+		return (0);
+	if (sta.length <= 2 && *sta.bot > *sta.top)
 		ft_command("sa", &sta, &stb);
 	else if (sta.length > 2)
 		ft_sort(&sta, &stb);
@@ -116,24 +118,6 @@ int	main(int argc, char **argv)
 // #include <stdio.h>
 // #include <stdlib.h>
 // #include <time.h>
-
-// static
-// uint8_t	is_sorted(const t_stack *sta, const t_stack *stb)
-// {
-// 	size_t	i;
-
-// 	if (stb->length > 0)
-// 		return (0);
-// 	i = 1;
-// 	while (i < sta->length)
-// 	{
-// 		if (sta->bot[i - 1] > sta->bot[i])
-// 			return (0);
-// 		i++;
-// 	}
-// 	return (1);
-// }
-
 // static void	ft_shuffle(int32_t *array, size_t size, int32_t seed)
 // {
 // 	int32_t	temp;

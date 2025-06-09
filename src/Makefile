@@ -1,7 +1,7 @@
 NAME = push_swap
 BONUS_NAME = checker
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -g
+CFLAGS = -Wall -Wextra -Werror
 RM = rm -f
 
 SRCS = array_ops.c binary_push.c greedy_push.c main.c parse_input.c utils_math.c utils_sort.c utils.c sort_five.c
