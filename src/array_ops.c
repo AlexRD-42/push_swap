@@ -6,12 +6,11 @@
 /*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 11:20:19 by adeimlin          #+#    #+#             */
-/*   Updated: 2025/06/08 20:55:41 by adeimlin         ###   ########.fr       */
+/*   Updated: 2025/06/09 12:48:11 by adeimlin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdint.h>
-#include <stddef.h>
 #include <unistd.h>
 #include "push_swap.h"
 

@@ -6,7 +6,7 @@
 /*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 10:47:43 by adeimlin          #+#    #+#             */
-/*   Updated: 2025/06/08 20:51:07 by adeimlin         ###   ########.fr       */
+/*   Updated: 2025/06/09 13:07:17 by adeimlin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,16 +37,26 @@ typedef struct s_median
 	int32_t	lower;
 }	t_med;
 
+typedef struct s_string
+{
+	char	*ptr;
+	size_t	length;
+}	t_str;
+
 int64_t	ft_atoi(const char *num_str);
-void	ft_putnbr(int64_t n, int fd);
 void	*ft_memcpy(void *dst_void, const void *src_void, size_t length);
 void	*ft_memset(void *dst_void, const uint8_t byte, size_t length);
+char	*get_next_line(int fd);
+int		checker(int argc, char **argv);
 
 size_t	ft_command(const char *cmd, t_stack *a, t_stack *b);
 size_t	ft_sort(t_stack *sta, t_stack *stb);
 void	ft_initialize(t_stack *sta, t_stack *stb, size_t length);
 void	ft_binary_push(t_stack *dst, t_stack *src, t_med med, uint8_t *lut);
 void	ft_push_cheapest(t_stack *sta, t_stack *stb);
+
+int		parse_duplicates(int32_t *array, size_t length);
+int		parse_input(char **argv, int argc, int32_t *array, size_t length);
 
 void	ft_insertion_sort(int32_t *array, size_t length);
 t_med	ft_get_median(int32_t *array, size_t length, uint8_t *lut);

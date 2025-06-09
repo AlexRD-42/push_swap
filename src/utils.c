@@ -6,13 +6,15 @@
 /*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 10:34:46 by adeimlin          #+#    #+#             */
-/*   Updated: 2025/06/08 20:49:44 by adeimlin         ###   ########.fr       */
+/*   Updated: 2025/06/09 12:51:52 by adeimlin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdint.h>
 #include <unistd.h>
 
+// Could make it more robust (add a string for INT64 MAX
+// and a loop to check if any is greater)
 int64_t	ft_atoi(const char *num_str)
 {
 	int64_t	number;
@@ -58,6 +60,7 @@ void	*ft_memrcpy(void *dst_void, const void *src_void, size_t length)
 	return (dst_void);
 }
 
+// Possibly check for src and dst alignment
 void	*ft_memcpy(void *dst_void, const void *src_void, size_t length)
 {
 	char		*dst;
@@ -84,28 +87,6 @@ void	*ft_memcpy(void *dst_void, const void *src_void, size_t length)
 			*dst++ = *src++;
 	}
 	return (dst_void);
-}
-
-void	ft_putnbr(int64_t n, int fd)
-{
-	const int8_t	sign = (n >= 0) - (n < 0);
-	char			array[21];
-	char			*ptr;
-
-	if (fd == -1)
-		return ;
-	ptr = array + 20;
-	*ptr = 0;
-	*(--ptr) = sign * (n % 10) + '0';
-	n = sign * (n / 10);
-	while (n != 0)
-	{
-		*(--ptr) = (n % 10) + '0';
-		n /= 10;
-	}
-	if (sign == -1)
-		*(--ptr) = '-';
-	write(fd, ptr, array + 20 - ptr);
 }
 
 void	*ft_memset(void *dst_void, const uint8_t byte, size_t length)

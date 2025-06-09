@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   sort.c                                             :+:      :+:    :+:   */
+/*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 16:35:21 by adeimlin          #+#    #+#             */
-/*   Updated: 2025/06/08 20:18:27 by adeimlin         ###   ########.fr       */
+/*   Updated: 2025/06/09 13:10:34 by adeimlin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,4 +82,27 @@ size_t	ft_sort(t_stack *sta, t_stack *stb)
 		ft_push_cheapest(sta, stb);
 	finish_rotate(sta, stb);
 	return (ft_command("000", sta, stb));
+}
+
+int	main(int argc, char **argv)
+{
+	int32_t	array_a[MAX_SIZE];
+	int32_t	array_b[MAX_SIZE];
+	t_stack	sta;
+	t_stack	stb;
+
+	if (argc <= 1 || argc >= MAX_SIZE)
+		return (0);
+	ft_memset(array_a, 0, MAX_SIZE * sizeof(int32_t));
+	if (parse_input(argv, argc, array_a, (size_t) argc - 1))
+		return (1);
+	sta.bot = array_a;
+	stb.bot = array_b;
+	ft_initialize(&sta, &stb, argc - 1);
+	if (sta.length <= 2 && sta.bot < sta.top)
+		ft_command("sa", &sta, &stb);
+	else if (sta.length > 2)
+		ft_sort(&sta, &stb);
+	// checker(argc, argv);
+	return (0);
 }

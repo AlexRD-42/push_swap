@@ -6,7 +6,7 @@
 /*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 11:45:52 by adeimlin          #+#    #+#             */
-/*   Updated: 2025/06/08 20:19:37 by adeimlin         ###   ########.fr       */
+/*   Updated: 2025/06/09 13:07:23 by adeimlin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ t_med	ft_get_median(int32_t *array, size_t length, uint8_t *lut)
 
 	i = 0;
 	min = INT32_MAX;
-	max = 0;
+	max = INT32_MIN;
 	while (i < length)
 	{
 		if (lut[array[i]] == 0 && array[i] < min)
