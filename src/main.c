@@ -6,7 +6,7 @@
 /*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 16:35:21 by adeimlin          #+#    #+#             */
-/*   Updated: 2025/06/09 16:49:19 by adeimlin         ###   ########.fr       */
+/*   Updated: 2025/06/09 19:34:54 by adeimlin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,12 @@ size_t	ft_sort(t_stack *sta, t_stack *stb)
 	uint8_t	lut[MAX_SIZE];
 	size_t	lis_length;
 
+	if (sta->length <= 5)
+	{
+		ft_sort_five(sta, stb);
+		finish_rotate(sta, stb);
+		return (ft_command("000", sta, stb));
+	}
 	lis_length = ft_find_lis(sta, lut);
 	lis_length += lis_length == 1;
 	while (sta->length > lis_length)
@@ -106,3 +112,67 @@ int	main(int argc, char **argv)
 		ft_sort(&sta, &stb);
 	return (0);
 }
+
+// #include <stdio.h>
+// #include <stdlib.h>
+// #include <time.h>
+
+// static
+// uint8_t	is_sorted(const t_stack *sta, const t_stack *stb)
+// {
+// 	size_t	i;
+
+// 	if (stb->length > 0)
+// 		return (0);
+// 	i = 1;
+// 	while (i < sta->length)
+// 	{
+// 		if (sta->bot[i - 1] > sta->bot[i])
+// 			return (0);
+// 		i++;
+// 	}
+// 	return (1);
+// }
+
+// static void	ft_shuffle(int32_t *array, size_t size, int32_t seed)
+// {
+// 	int32_t	temp;
+// 	size_t	j;
+
+// 	srand(seed);
+// 	while (size > 0)
+// 	{
+// 		size--;
+// 		j = rand() % (size + 1);
+// 		temp = array[size];
+// 		array[size] = array[j];
+// 		array[j] = temp;
+// 	}
+// }
+
+// #define LENGTH 500
+// #define NUM_RUNS 1000
+// int main()
+// {
+// 	int32_t array_a[MAX_SIZE];
+// 	int32_t array_b[MAX_SIZE];
+// 	t_stack	sta;
+// 	t_stack	stb;
+
+// 	sta.bot = array_a;
+// 	stb.bot = array_b;
+// 	for (int j = 0; j < NUM_RUNS; j++)
+// 	{
+// 		srand(time(NULL) + rand() + j);
+// 		for (int i = 0; i < LENGTH; i++)
+// 			array_a[i] = i;
+// 		ft_shuffle(sta.bot, LENGTH, time(NULL) + rand() + j);
+// 		ft_initialize(&sta, &stb, LENGTH);
+// 		size_t	sort_count = ft_sort(&sta, &stb);
+// 		uint8_t	is_sort = is_sorted(&sta, &stb);
+// 		// printf("%llu, %u\n", sort_count, is_sort);
+// 		ft_command("CLR", &sta, &stb);
+// 		if (is_sort == 0 || sort_count > 5000)
+// 			is_sort = 1;
+// 	}
+// }

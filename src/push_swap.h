@@ -6,7 +6,7 @@
 /*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 10:47:43 by adeimlin          #+#    #+#             */
-/*   Updated: 2025/06/09 17:13:54 by adeimlin         ###   ########.fr       */
+/*   Updated: 2025/06/09 17:55:15 by adeimlin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ int		parse_input(char **argv, int argc, int32_t *array, size_t length);
 void	ft_insertion_sort(int32_t *array, size_t length);
 t_med	ft_get_median(int32_t *array, size_t length, uint8_t *lut);
 size_t	ft_find_lis(t_stack *sta, uint8_t *lis_out);
+void	ft_sort_five(t_stack *sta, t_stack *stb);
 
 int64_t	i64_min(int64_t number1, int64_t number2);
 int64_t	i64_max(int64_t number1, int64_t number2);

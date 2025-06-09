@@ -6,7 +6,7 @@
 /*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 10:34:04 by adeimlin          #+#    #+#             */
-/*   Updated: 2025/06/09 12:49:20 by adeimlin         ###   ########.fr       */
+/*   Updated: 2025/06/09 19:40:51 by adeimlin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,12 @@ int	parse_duplicates(int32_t *array, size_t length)
 	return (0);
 }
 
+static
+uint8_t	scheck(char *str)
+{
+	return (*str != 0 && str[1] == 0 && (*str < '0' || *str > '9'));
+}
+
 int	parse_input(char **argv, int argc, int32_t *array, size_t length)
 {
 	size_t	i;
@@ -55,7 +61,7 @@ int	parse_input(char **argv, int argc, int32_t *array, size_t length)
 		if (str - argv[argc] > (10 + (argv[argc][0] == '-')))
 			return (write(2, "Error\n", 6));
 		number = ft_atoi(argv[argc]);
-		if (number > INT32_MAX || number < INT32_MIN)
+		if (number > INT32_MAX || number < INT32_MIN || scheck(argv[argc]))
 			return (write(2, "Error\n", 6));
 		array[i++] = (int32_t) number;
 	}

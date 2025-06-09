@@ -4,7 +4,7 @@ CC = cc
 CFLAGS = -Wall -Wextra -Werror -g
 RM = rm -f
 
-SRCS = array_ops.c binary_push.c greedy_push.c main.c parse_input.c utils_math.c utils_sort.c utils.c
+SRCS = array_ops.c binary_push.c greedy_push.c main.c parse_input.c utils_math.c utils_sort.c utils.c sort_five.c
 
 BONUS_SRCS = bonus/checker_bonus.c bonus/array_ops_bonus.c bonus/get_next_line_bonus.c \
 	bonus/parse_input_bonus.c bonus/utils_bonus.c
