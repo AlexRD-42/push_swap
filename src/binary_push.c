@@ -6,7 +6,7 @@
 /*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 19:07:35 by adeimlin          #+#    #+#             */
-/*   Updated: 2025/06/08 20:17:46 by adeimlin         ###   ########.fr       */
+/*   Updated: 2025/06/09 15:24:13 by adeimlin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@ uint8_t	push_is_valid(t_stack *stack, t_med med, uint8_t *lut)
 	size_t	i;
 
 	i = 0;
+	if (stack->length <= 2)
+		return (0);
 	while (i < stack->length)
 	{
 		if (stack->bot[i] >= med.middle && !lut[stack->bot[i]])

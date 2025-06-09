@@ -6,7 +6,7 @@
 /*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 16:35:21 by adeimlin          #+#    #+#             */
-/*   Updated: 2025/06/09 13:10:34 by adeimlin         ###   ########.fr       */
+/*   Updated: 2025/06/09 16:49:19 by adeimlin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,7 @@ size_t	ft_sort(t_stack *sta, t_stack *stb)
 	size_t	lis_length;
 
 	lis_length = ft_find_lis(sta, lut);
+	lis_length += lis_length == 1;
 	while (sta->length > lis_length)
 	{
 		median = ft_get_median(sta->bot, sta->length, lut);
@@ -103,6 +104,5 @@ int	main(int argc, char **argv)
 		ft_command("sa", &sta, &stb);
 	else if (sta.length > 2)
 		ft_sort(&sta, &stb);
-	// checker(argc, argv);
 	return (0);
 }
